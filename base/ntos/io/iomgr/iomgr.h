@@ -14,7 +14,7 @@ Abstract:
 
     This module contains the private structure definitions and APIs used by
     the NT I/O system.
-
+    此模块包含NT I/O系统使用的私有结构定义和API。
 --*/
 
 #ifndef _IOMGR_
@@ -66,9 +66,13 @@ typedef struct _DUMP_CONTROL_BLOCK DUMP_CONTROL_BLOCK, *PDUMP_CONTROL_BLOCK;
 // These entries are entered onto the tail when the driver requests that
 // it be reinitialized, and removed from the head by the code that actually
 // performs the reinitialization.
-//
+// 定义放置在驱动程序重新初始化队列中的条目的类型。
+// 当驱动程序请求重新初始化时，这些条目将输入到尾部，
+// 并通过实际执行重新初始化的代码从头部删除。
 
-typedef struct _REINIT_PACKET {
+
+typedef struct _REINIT_PACKET 
+{
     LIST_ENTRY ListEntry;
     PDRIVER_OBJECT DriverObject;
     PDRIVER_REINITIALIZE DriverReinitializationRoutine;
@@ -78,9 +82,11 @@ typedef struct _REINIT_PACKET {
 
 //
 // Define transfer types for process counters.
+// 定义流程计数器的传输类型。
 //
 
-typedef enum _TRANSFER_TYPE {
+typedef enum _TRANSFER_TYPE 
+{
     ReadTransfer,
     WriteTransfer,
     OtherTransfer
@@ -89,15 +95,18 @@ typedef enum _TRANSFER_TYPE {
 //
 // Define the maximum amount of memory that can be allocated for all
 // outstanding error log packets.
+// 定义可为所有未完成的错误日志数据包分配的最大内存量。
 //
 
-#define IOP_MAXIMUM_LOG_ALLOCATION (100*PAGE_SIZE)
+#define IOP_MAXIMUM_LOG_ALLOCATION (100*PAGE_SIZE)   // 100个4k
 
 //
 // Define an error log entry.
+// 定义错误日志条目。
 //
 
-typedef struct _ERROR_LOG_ENTRY {
+typedef struct _ERROR_LOG_ENTRY 
+{
     USHORT Type;
     USHORT Size;
     LIST_ENTRY ListEntry;
@@ -110,9 +119,12 @@ typedef struct _ERROR_LOG_ENTRY {
 //  Define both the global IOP_HARD_ERROR_QUEUE and IOP_HARD_ERROR_PACKET
 //  structures.   Also set the maximum number of outstanding hard error
 //  packets allowed.
+//  定义全局IOP_HARD_ERROR_QUEUE和IOP_HARD_ERROR_PACKET结构。 
+//  还设置了未完成的硬错误的最大数量允许的数据包
 //
 
-typedef struct _IOP_HARD_ERROR_QUEUE {
+typedef struct _IOP_HARD_ERROR_QUEUE 
+{
     WORK_QUEUE_ITEM ExWorkItem;
     LIST_ENTRY WorkQueue;
     KSPIN_LOCK WorkQueueSpinLock;
@@ -121,53 +133,36 @@ typedef struct _IOP_HARD_ERROR_QUEUE {
     LONG   NumPendingApcPopups;
 } IOP_HARD_ERROR_QUEUE, *PIOP_HARD_ERROR_QUEUE;
 
-typedef struct _IOP_HARD_ERROR_PACKET {
+typedef struct _IOP_HARD_ERROR_PACKET 
+{
     LIST_ENTRY WorkQueueLinks;
     NTSTATUS ErrorStatus;
     UNICODE_STRING String;
 } IOP_HARD_ERROR_PACKET, *PIOP_HARD_ERROR_PACKET;
 
-typedef struct _IOP_APC_HARD_ERROR_PACKET {
+typedef struct _IOP_APC_HARD_ERROR_PACKET 
+{
     WORK_QUEUE_ITEM Item;
     PIRP Irp;
     PVPB Vpb;
     PDEVICE_OBJECT RealDeviceObject;
 } IOP_APC_HARD_ERROR_PACKET, *PIOP_APC_HARD_ERROR_PACKET;
 
-typedef
-NTSTATUS
-(FASTCALL *PIO_CALL_DRIVER) (
-    IN      PDEVICE_OBJECT  DeviceObject,
-    IN OUT  PIRP            Irp,
-    IN      PVOID           ReturnAddress
-    );
+typedef NTSTATUS(FASTCALL *PIO_CALL_DRIVER) (IN PDEVICE_OBJECT DeviceObject, IN OUT PIRP Irp, IN PVOID ReturnAddress);
 
-typedef
-VOID
-(FASTCALL *PIO_COMPLETE_REQUEST) (
-    IN PIRP Irp,
-    IN CCHAR PriorityBoost
-    );
+typedef VOID(FASTCALL *PIO_COMPLETE_REQUEST) (IN PIRP Irp, IN CCHAR PriorityBoost);
 
-typedef
-VOID
-(*PIO_FREE_IRP) (
-    IN struct _IRP *Irp
-    );
+typedef VOID(*PIO_FREE_IRP) (IN struct _IRP *Irp);
 
-typedef
-PIRP
-(*PIO_ALLOCATE_IRP) (
-    IN CCHAR   StackSize,
-    IN BOOLEAN ChargeQuota
-    );
+typedef PIRP(*PIO_ALLOCATE_IRP) (IN CCHAR StackSize, IN BOOLEAN ChargeQuota);
 
 extern IOP_HARD_ERROR_QUEUE IopHardError;
 extern PIOP_HARD_ERROR_PACKET IopCurrentHardError;
 
 #define IOP_MAXIMUM_OUTSTANDING_HARD_ERRORS 25
 
-typedef struct _IO_WORKITEM {
+typedef struct _IO_WORKITEM 
+{
     WORK_QUEUE_ITEM WorkItem;
     PIO_WORKITEM_ROUTINE Routine;
     PDEVICE_OBJECT DeviceObject;
@@ -179,6 +174,7 @@ typedef struct _IO_WORKITEM {
 
 //
 // Define the global data for the error logger and I/O system.
+// 定义错误记录器和I/O系统的全局数据。
 //
 
 extern WORK_QUEUE_ITEM IopErrorLogWorkItem;
@@ -192,15 +188,18 @@ extern const GENERIC_MAPPING IopFileMapping;
 
 //
 // Define a dummy file object for use on stack for fast open operations.
+// 定义一个虚拟文件对象，以便在堆栈上用于快速打开操作。
 //
 
-typedef struct _DUMMY_FILE_OBJECT {
+typedef struct _DUMMY_FILE_OBJECT 
+{
     OBJECT_HEADER ObjectHeader;
     CHAR FileObjectBody[ sizeof( FILE_OBJECT ) ];
 } DUMMY_FILE_OBJECT, *PDUMMY_FILE_OBJECT;
 
 //
 // Define the structures private to the I/O system.
+// 定义I/O系统的私有结构。
 //
 
 #define OPEN_PACKET_PATTERN  0xbeaa0251
@@ -210,9 +209,11 @@ typedef struct _DUMMY_FILE_OBJECT {
 // between the NtCreateFile service executing in the context of the caller
 // and the device object parse routine.  It is the parse routine who actually
 // creates the file object for the file.
-//
+// 定义开放数据包（OP）。OP用于传递信息在调用者的上下文中执行的NtCreateFile服务之间和设备对象解析例程。
+// 实际上是解析程序为文件创建文件对象。
 
-typedef struct _OPEN_PACKET {
+typedef struct _OPEN_PACKET 
+{
     CSHORT Type;
     CSHORT Size;
     PFILE_OBJECT FileObject;
@@ -240,7 +241,7 @@ typedef struct _OPEN_PACKET {
     //
     // The following is used when performing a fast query during open to get
     // back the file attributes for a file.
-    //
+    // 
 
     PFILE_BASIC_INFORMATION BasicInformation;
 
