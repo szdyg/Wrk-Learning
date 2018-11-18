@@ -26,7 +26,7 @@ include callconv.inc            ; calling convention macros
         subttl  "Update System Time"
 
 _PAGE SEGMENT DWORD PUBLIC 'CODE'
-	ASSUME	DS:FLAT, ES:FLAT, SS:NOTHING, FS:NOTHING, GS:NOTHING
+    ASSUME    DS:FLAT, ES:FLAT, SS:NOTHING, FS:NOTHING, GS:NOTHING
 
 ;++
 ;

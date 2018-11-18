@@ -141,8 +141,8 @@ Return Value:
     //
     
     if ((FileObject->SectionObjectPointer == NULL) ||
-    	((SharedCacheMap = FileObject->SectionObjectPointer->SharedCacheMap) == NULL)){
-    	 FsRtlReleaseFile( FileObject );
+        ((SharedCacheMap = FileObject->SectionObjectPointer->SharedCacheMap) == NULL)){
+         FsRtlReleaseFile( FileObject );
         return FALSE;
     }
     

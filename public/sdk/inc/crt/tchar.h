@@ -438,11 +438,11 @@ __inline unsigned int __cdecl _wcsnextc(const wchar_t * _cpc) { return (unsigned
 __inline wchar_t * __cdecl _wcsninc(const wchar_t * _pc, size_t _sz) { return (wchar_t *)(_pc+_sz); }
 __inline size_t __cdecl _wcsncnt( const wchar_t * string, size_t cnt) 
 { 
-	size_t n = cnt; 
-	wchar_t *cp = (wchar_t *)string; 
-	while (n-- && *cp) 
-		cp++; 
-	return cnt - n - 1; 
+    size_t n = cnt; 
+    wchar_t *cp = (wchar_t *)string; 
+    while (n-- && *cp) 
+        cp++; 
+    return cnt - n - 1; 
 }
 __inline wchar_t * __cdecl _wcsspnp( const wchar_t * _cpc1, const wchar_t * _cpc2) { return (*(_cpc1 += wcsspn(_cpc1,_cpc2))!='\0') ? (wchar_t*)_cpc1 : NULL; }
 #endif  /* __STDC__ */
@@ -1090,11 +1090,11 @@ __inline unsigned int __cdecl _strnextc(const char * _cpc) { return (unsigned in
 __inline char * __cdecl _strninc(const char * _pc, size_t _sz) { return (char *)(_pc+_sz); }
 __inline size_t __cdecl _strncnt( const char * string, size_t cnt) 
 { 
-	size_t n = cnt; 
-	char *cp = (char *)string; 
-	while (n-- && *cp) 
-		cp++; 
-	return cnt - n - 1; 
+    size_t n = cnt; 
+    char *cp = (char *)string; 
+    while (n-- && *cp) 
+        cp++; 
+    return cnt - n - 1; 
 }
 __inline char * __cdecl _strspnp( const char * _cpc1, const char * _cpc2) { return (*(_cpc1 += strspn(_cpc1,_cpc2))!='\0') ? (char*)_cpc1 : NULL; }
 #endif  /* __STDC__ */

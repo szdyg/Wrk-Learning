@@ -659,7 +659,7 @@ Routine Description:
 
     Attempts to find the smallest cell which can accommodate the current security cell.
     Then moves it at the end and return a pointer to it. Shifts the array towards the end 
-	as we are going to extend the cache
+    as we are going to extend the cache
 
     Security doesn't change too often, so chances are that we will be able to reuse the cells 90% 
     of the time.
@@ -717,14 +717,14 @@ Return Value:
 Found:
             //
             // we have found one matching the exact size; move it at the end 
-			// shift to the end one entry as we are going to extend the cache
-			//
-			// this factored down translates to:
+            // shift to the end one entry as we are going to extend the cache
             //
-			RtlMoveMemory( ((PUCHAR)CmHive->SecurityCache) + (CmHive->SecurityCount+1)*sizeof(CM_KEY_SECURITY_CACHE_ENTRY),     // destination
-						   ((PUCHAR)CmHive->SecurityCache) + CmHive->SecurityCount*sizeof(CM_KEY_SECURITY_CACHE_ENTRY),         // source
-						   (i - CmHive->SecurityCount)*sizeof(CM_KEY_SECURITY_CACHE_ENTRY)							// size
-							);
+            // this factored down translates to:
+            //
+            RtlMoveMemory( ((PUCHAR)CmHive->SecurityCache) + (CmHive->SecurityCount+1)*sizeof(CM_KEY_SECURITY_CACHE_ENTRY),     // destination
+                           ((PUCHAR)CmHive->SecurityCache) + CmHive->SecurityCount*sizeof(CM_KEY_SECURITY_CACHE_ENTRY),         // source
+                           (i - CmHive->SecurityCount)*sizeof(CM_KEY_SECURITY_CACHE_ENTRY)                            // size
+                            );
 
             return SecurityCached;
        }
@@ -755,13 +755,13 @@ Found:
 
 ErrorExit:
     ExFreePoolWithTag(CmHive->SecurityCache[PreviousCount - 1].CachedSecurity, CM_SECCACHE_TAG|PROTECTED_POOL );
-	//
-	// shift to the end one entry as we are going to extend the cache
-	//
-	RtlMoveMemory( ((PUCHAR)CmHive->SecurityCache) + (CmHive->SecurityCount+1)*sizeof(CM_KEY_SECURITY_CACHE_ENTRY),     // destination
-				   ((PUCHAR)CmHive->SecurityCache) + CmHive->SecurityCount*sizeof(CM_KEY_SECURITY_CACHE_ENTRY),         // source
-				   (PreviousCount - CmHive->SecurityCount - 1)*sizeof(CM_KEY_SECURITY_CACHE_ENTRY)							// size
-					);
+    //
+    // shift to the end one entry as we are going to extend the cache
+    //
+    RtlMoveMemory( ((PUCHAR)CmHive->SecurityCache) + (CmHive->SecurityCount+1)*sizeof(CM_KEY_SECURITY_CACHE_ENTRY),     // destination
+                   ((PUCHAR)CmHive->SecurityCache) + CmHive->SecurityCount*sizeof(CM_KEY_SECURITY_CACHE_ENTRY),         // source
+                   (PreviousCount - CmHive->SecurityCount - 1)*sizeof(CM_KEY_SECURITY_CACHE_ENTRY)                            // size
+                    );
     return NULL;
 }
 
@@ -956,7 +956,7 @@ Return Value:
     PCM_KEY_SECURITY_CACHE  CachedSecurity;
 
     PAGED_CODE();
-	
+    
     DescriptorLength = RtlLengthSecurityDescriptor(SecurityDescriptor);
 
     //
@@ -1087,7 +1087,7 @@ CmpBuildSecurityCellMappingArray(
 Routine Description:
 
     Iterates through the security cache for the specified hive and 
-	build the array of mappings.
+    build the array of mappings.
 
 Arguments:
 
@@ -1101,26 +1101,26 @@ Return Value:
     ULONG                   i;
     PAGED_CODE();
 
-	ASSERT( CmHive->CellRemapArray == NULL );
-	CmHive->CellRemapArray = ExAllocatePool(PagedPool,sizeof(CM_CELL_REMAP_BLOCK)*CmHive->SecurityCount);
+    ASSERT( CmHive->CellRemapArray == NULL );
+    CmHive->CellRemapArray = ExAllocatePool(PagedPool,sizeof(CM_CELL_REMAP_BLOCK)*CmHive->SecurityCount);
 
-	if( CmHive->CellRemapArray == NULL ) {
-		return FALSE;
-	}
+    if( CmHive->CellRemapArray == NULL ) {
+        return FALSE;
+    }
 
 #pragma prefast(suppress:12009, "silence prefast")
     for( i=0;i<CmHive->SecurityCount;i++) {
-		CmHive->CellRemapArray[i].OldCell = CmHive->SecurityCache[i].Cell;
-		if( HvGetCellType(CmHive->SecurityCache[i].Cell) == (ULONG)Volatile ) {
-			//
-			// we preserve volatile cells
-			//
-			CmHive->CellRemapArray[i].NewCell = CmHive->SecurityCache[i].Cell;
-		} else {
-			CmHive->CellRemapArray[i].NewCell = HCELL_NIL;
-		}
+        CmHive->CellRemapArray[i].OldCell = CmHive->SecurityCache[i].Cell;
+        if( HvGetCellType(CmHive->SecurityCache[i].Cell) == (ULONG)Volatile ) {
+            //
+            // we preserve volatile cells
+            //
+            CmHive->CellRemapArray[i].NewCell = CmHive->SecurityCache[i].Cell;
+        } else {
+            CmHive->CellRemapArray[i].NewCell = HCELL_NIL;
+        }
     }
 
-	return TRUE;
+    return TRUE;
 }
 

@@ -461,13 +461,13 @@ KfCS30: movdqa  xmm6, KfFrame.SavedXmm6[rsp] ; restore nonvolatile floating regi
 ; TR is loaded.
 ;
 
-	movzx	eax, word ptr PsTr[rcx] ; get TSS selector
-	add	rax, PsGdtr + 2[rcx]	; compute TSS GDT entry address
-	and	byte ptr 5[rax], NOT 2  ; clear busy bit
+    movzx    eax, word ptr PsTr[rcx] ; get TSS selector
+    add    rax, PsGdtr + 2[rcx]    ; compute TSS GDT entry address
+    and    byte ptr 5[rax], NOT 2  ; clear busy bit
         ltr     word ptr PsTr[rcx]      ; restore TR
 
-	xor     eax, eax                ; load a NULL selector into the ldt
-	lldt	ax                      ;
+    xor     eax, eax                ; load a NULL selector into the ldt
+    lldt    ax                      ;
 
         ldmxcsr dword ptr PsMxCsr[rcx]  ; restore XMM control/status
 

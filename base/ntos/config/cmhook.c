@@ -111,7 +111,7 @@ Return Value:
     KeQuerySystemTime(&(CmCallbackContext->Cookie));
     *Cookie = CmCallbackContext->Cookie;
     InitializeListHead(&(CmCallbackContext->ThreadListHead));   
-	ExInitializePushLock(&(CmCallbackContext->ThreadListLock));
+    ExInitializePushLock(&(CmCallbackContext->ThreadListLock));
     CmCallbackContext->CallerContext = Context;
 
     //
@@ -371,29 +371,29 @@ Return Value:
 
     CmpLockContext(CallbackBlock);
     //
-	// walk the ActiveThreadList and see if we are already active
-	//
-	AnchorAddr = &(CallbackBlock->ThreadListHead);
-	CurrentThreadInfo = (PCM_ACTIVE_NOTIFY_THREAD)(CallbackBlock->ThreadListHead.Flink);
+    // walk the ActiveThreadList and see if we are already active
+    //
+    AnchorAddr = &(CallbackBlock->ThreadListHead);
+    CurrentThreadInfo = (PCM_ACTIVE_NOTIFY_THREAD)(CallbackBlock->ThreadListHead.Flink);
 
-	while ( CurrentThreadInfo != (PCM_ACTIVE_NOTIFY_THREAD)AnchorAddr ) {
-		CurrentThreadInfo = CONTAINING_RECORD(
-						                    CurrentThreadInfo,
-						                    CM_ACTIVE_NOTIFY_THREAD,
-						                    ThreadList
-						                    );
-		if( CurrentThreadInfo->Thread == ActiveThreadInfo->Thread ) {
-			//
-			// already there!
-			//
+    while ( CurrentThreadInfo != (PCM_ACTIVE_NOTIFY_THREAD)AnchorAddr ) {
+        CurrentThreadInfo = CONTAINING_RECORD(
+                                            CurrentThreadInfo,
+                                            CM_ACTIVE_NOTIFY_THREAD,
+                                            ThreadList
+                                            );
+        if( CurrentThreadInfo->Thread == ActiveThreadInfo->Thread ) {
+            //
+            // already there!
+            //
             CmpUnlockContext(CallbackBlock);
             return FALSE;
-		}
+        }
         //
         // skip to the next element
         //
         CurrentThreadInfo = (PCM_ACTIVE_NOTIFY_THREAD)(CurrentThreadInfo->ThreadList.Flink);
-	}
+    }
 
     //
     // add this thread

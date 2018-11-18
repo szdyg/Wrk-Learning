@@ -231,19 +231,19 @@ Return Value:
     //
 
     NewSp = Context.Rsp - sizeof(CONTEXT);
-	Status = NtWriteVirtualMemory(Process,
-				                  (PVOID)NewSp,
-				                  &Context,
-				                  sizeof(CONTEXT),
-				                  NULL);
+    Status = NtWriteVirtualMemory(Process,
+                                  (PVOID)NewSp,
+                                  &Context,
+                                  sizeof(CONTEXT),
+                                  NULL);
 
-	if (!NT_SUCCESS(Status)) {
+    if (!NT_SUCCESS(Status)) {
         if (AlreadySuspended == FALSE) {
             NtResumeThread(Thread, NULL);
         }
 
-	    return Status;
-	}
+        return Status;
+    }
 
     //
     // Pass the parameters to the target thread via the nonvolatile registers

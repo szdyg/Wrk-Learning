@@ -744,10 +744,10 @@ RtlSetEnvironmentVariable(
                             *pStart++ = L'\0';
                             RtlMoveMemory( pStart, p,(ULONG)((pEnd - p)*sizeof(WCHAR)));
 
-    			            if (ARGUMENT_PRESENT( Environment )) {
-    			                *Environment = pNew;
+                            if (ARGUMENT_PRESENT( Environment )) {
+                                *Environment = pNew;
                             } else {
-    			                ProcessParameters->Environment = pNew;
+                                ProcessParameters->Environment = pNew;
 
 #if defined(BUILD_WOW6432)
                                 ((PRTL_USER_PROCESS_PARAMETERS64)(NtCurrentPeb64()->ProcessParameters))->Environment = (ULONGLONG)(ULONG)pNew;
@@ -891,9 +891,9 @@ RtlSetEnvironmentVariable(
                     }
 
                     if (ARGUMENT_PRESENT( Environment )) {
-    		            *Environment = pNew;
+                        *Environment = pNew;
                     } else {
-    		            ProcessParameters->Environment = pNew;
+                        ProcessParameters->Environment = pNew;
 #if defined(BUILD_WOW6432)
                         ((PRTL_USER_PROCESS_PARAMETERS64)(NtCurrentPeb64()->ProcessParameters))->Environment = (ULONGLONG)(ULONG)pNew;
 #endif

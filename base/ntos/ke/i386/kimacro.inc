@@ -341,7 +341,7 @@ endif   ; NoV86Assist
 ;       AssistLabel - label ENTER_ASSIST macro is at
 ;       TargetLabel - label to emit for ENTER_ASSIST to jump to
 ;       NoFSLoad    - Don't set FS(it is already set to KGDT_R0_PCR at entry).
-;	SaveEcx     - Save ecx off in the trap frame.
+;    SaveEcx     - Save ecx off in the trap frame.
 ;
 ;   Exit-conditions:
 ;       Interrupts match input state (this routine doesn't change IEF)

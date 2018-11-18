@@ -140,8 +140,8 @@ extern BOOLEAN CmpTrackHiveClose;
 
 ULONG   CmSelfHeal = 1; // enabled by default
 
-extern LIST_ENTRY	    CmpSelfHealQueueListHead;
-extern KGUARDED_MUTEX	CmpSelfHealQueueLock;
+extern LIST_ENTRY        CmpSelfHealQueueListHead;
+extern KGUARDED_MUTEX    CmpSelfHealQueueLock;
 
 //
 // Private prototypes
@@ -442,9 +442,9 @@ Return Value:
     //
     CmpInitCallback();
 
-	//
-	// Self Heal workitem queue
-	//
+    //
+    // Self Heal workitem queue
+    //
     InitializeListHead(&CmpSelfHealQueueListHead);
     KeInitializeGuardedMutex(&CmpSelfHealQueueLock);
 
@@ -867,9 +867,9 @@ Return Value:
                 CM_BUGCHECK(CONFIG_LIST_FAILED,BAD_CORE_HIVE,Status,i,&RegName);
             }
 
-			if( CmpMachineHiveList[i].Allocate == TRUE ) {
-				HvSyncHive((PHHIVE)(CmpMachineHiveList[i].CmHive2));
-			}
+            if( CmpMachineHiveList[i].Allocate == TRUE ) {
+                HvSyncHive((PHHIVE)(CmpMachineHiveList[i].CmHive2));
+            }
            
         } else {
             //
@@ -3731,7 +3731,7 @@ CmpSetupPrivateWrite(
 
 Routine Description:
 
-	Converts the primary file to private write stream
+    Converts the primary file to private write stream
 
 Arguments:
 
@@ -3745,9 +3745,9 @@ Return Value:
 {   
     ULONG       FileOffset;
     ULONG       Data;
-	NTSTATUS	Status;
+    NTSTATUS    Status;
 
-	CM_PAGED_CODE()
+    CM_PAGED_CODE()
 
     //
     //  We need to issue a read from the file, to trigger the cache initialization
@@ -3771,7 +3771,7 @@ Return Value:
     //
     Status = CmpAcquireFileObjectForFile(CmHive,CmHive->FileHandles[HFILE_TYPE_PRIMARY],&(CmHive->FileObject));
     if( !NT_SUCCESS(Status) ) {
-		return Status;
+        return Status;
     }
 
     //
@@ -3780,7 +3780,7 @@ Return Value:
     CmHive->Hive.GetCellRoutine = HvpGetCellMapped;
     CmHive->Hive.ReleaseCellRoutine = HvpReleaseCellMapped;
 
-	return STATUS_SUCCESS;
+    return STATUS_SUCCESS;
 }
 
 //
@@ -3967,7 +3967,7 @@ Return Value:
             // in memory images.  Call HvSyncHive to write changes
             // out to disk.
             //
-			BOOLEAN	NoBufering = FALSE; // first try to open it cached;
+            BOOLEAN    NoBufering = FALSE; // first try to open it cached;
 
 retryNoBufering:
 
@@ -4008,35 +4008,35 @@ fatal:
             CmHive->FileHandles[HFILE_TYPE_LOG] = LogHandle;
             CmHive->FileHandles[HFILE_TYPE_PRIMARY] = PrimaryHandle;
 
-			if( NoBufering == FALSE ) {
-				//
-				// initialize cache and mark the stream as PRIVATE_WRITE;
-				// next flush will do the actual conversion
-				//
-				Status = CmpSetupPrivateWrite(CmHive);
-			}
+            if( NoBufering == FALSE ) {
+                //
+                // initialize cache and mark the stream as PRIVATE_WRITE;
+                // next flush will do the actual conversion
+                //
+                Status = CmpSetupPrivateWrite(CmHive);
+            }
 
-			if( !NT_SUCCESS(Status) ) {
-				if( (NoBufering == TRUE) || (Status != STATUS_RETRY) ) {
-					//
-					// we have tried both ways and it didn't work; bad luck
-					//
-					goto fatal;
-				}
+            if( !NT_SUCCESS(Status) ) {
+                if( (NoBufering == TRUE) || (Status != STATUS_RETRY) ) {
+                    //
+                    // we have tried both ways and it didn't work; bad luck
+                    //
+                    goto fatal;
+                }
 
                 DbgPrintEx(DPFLTR_CONFIG_ID,DPFLTR_ERROR_LEVEL,"Failed to convert SYSTEM hive to mapped (0x%lx) ... loading it in paged pool\n",Status);
 
-				//
-				// close handle and make another attempt to open them without buffering
-				//
-				CmpTrackHiveClose = TRUE;
-				ZwClose(PrimaryHandle);
-				CmpTrackHiveClose = FALSE;
-				ZwClose(LogHandle);
-				NoBufering = TRUE;
+                //
+                // close handle and make another attempt to open them without buffering
+                //
+                CmpTrackHiveClose = TRUE;
+                ZwClose(PrimaryHandle);
+                CmpTrackHiveClose = FALSE;
+                ZwClose(LogHandle);
+                NoBufering = TRUE;
 
-				goto retryNoBufering;
-			}
+                goto retryNoBufering;
+            }
 
             //
             // now that we successfully opened the hive files, clear off the lazy flush flag

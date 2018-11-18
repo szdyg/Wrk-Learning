@@ -75,7 +75,7 @@ Return Value:
 {
     PWNODE_HEADER WnodeEventItem;
     PLIST_ENTRY NotificationPacketList;
-	PEVENTWORKCONTEXT EventContext;
+    PEVENTWORKCONTEXT EventContext;
 
     PAGED_CODE();
     
@@ -89,11 +89,11 @@ Return Value:
 
         WmipAssert(NotificationPacketList != NULL);
 
-		EventContext = (PEVENTWORKCONTEXT)
+        EventContext = (PEVENTWORKCONTEXT)
                          CONTAINING_RECORD(NotificationPacketList,
                          EVENTWORKCONTEXT,
                          ListEntry);
-		
+        
         WnodeEventItem = EventContext->Wnode;
 
         //
@@ -115,7 +115,7 @@ Return Value:
             WmipUnreferenceRegEntry(EventContext->RegEntry);
         }
 
-		ExFreePool(EventContext);
+        ExFreePool(EventContext);
     } while (InterlockedDecrement(&WmipEventWorkItems));
 
 }

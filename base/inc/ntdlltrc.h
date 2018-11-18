@@ -8,23 +8,24 @@ Module Name:
 
 Abstract:
 
-	This file contains structures and functions definitions used in Ntdll 
-	events tracing
+    This file contains structures and functions definitions used in Ntdll 
+    events tracing
 
+    此文件包含Ntdll事件跟踪中使用的结构和函数定义
 
 --*/
 
 #ifndef _NTDLL_WMI_TRACE_
 #define _NTDLL_WMI_TRACE_
 
-#define MEMORY_FROM_LOOKASIDE					1		//Activity from LookAside
-#define MEMORY_FROM_LOWFRAG						2		//Activity from Low Frag Heap
-#define MEMORY_FROM_MAINPATH					3		//Activity from Main Code Path
-#define MEMORY_FROM_SLOWPATH                    4       //Activity from Slow Code Path
+#define MEMORY_FROM_LOOKASIDE                    1        //Activity from LookAside
+#define MEMORY_FROM_LOWFRAG                      2        //Activity from Low Frag Heap
+#define MEMORY_FROM_MAINPATH                     3        //Activity from Main Code Path
+#define MEMORY_FROM_SLOWPATH                     4        //Activity from Slow Code Path
 
 #define LOG_LOOKASIDE                           0x00000001       //Bit for LookAside trace
 
-#define FAILED_TLSINDEX			-1
+#define FAILED_TLSINDEX            -1
 #define MAX_PID                 10
 
 #ifndef UserSharedData
@@ -38,8 +39,7 @@ extern BOOLEAN bNtdllTrace;
     &&(bNtdllTrace || GlobalCounter != (USER_SHARED_DATA->TraceLogging >> 16)) \
     &&((HandleToUlong(NtCurrentTeb()->EtwTraceData) & IN_TRACING) != IN_TRACING))
 
-extern 
-ULONG GlobalCounter;
+extern ULONG GlobalCounter;
 
 #define IsHeapLogging(HeapHandle) (USER_SHARED_DATA->TraceLogging & ENABLEHEAPTRACE &&\
     (bNtdllTrace || GlobalCounter != (USER_SHARED_DATA->TraceLogging >> 16))&& \
@@ -48,6 +48,7 @@ ULONG GlobalCounter;
 //
 // When calling from deep inside heap allocation routines, we do not want to 
 // be initializing ETW process heap since that gets into recursive behaviour. 
+// 从深层内部堆分配例程调用时，我们不希望初始化ETW进程堆，因为它会进入递归行为
 //
 
 #define IsDeepHeapLogging(HeapHandle) (USER_SHARED_DATA->TraceLogging & ENABLEHEAPTRACE &&\
@@ -55,48 +56,43 @@ ULONG GlobalCounter;
     (EtwpProcessHeap != NULL) && \
     ((HandleToUlong(NtCurrentTeb()->EtwTraceData) & IN_TRACING) != IN_TRACING))
 
-
 typedef struct _THREAD_LOCAL_DATA THREAD_LOCAL_DATA, *PTHREAD_LOCAL_DATA, **PPTHREAD_LOCAL_DATA;
 
 typedef struct _THREAD_LOCAL_DATA {
 
-	PTHREAD_LOCAL_DATA  FLink;					//Forward Link
-	PTHREAD_LOCAL_DATA  BLink;					//Backward Link
-	PWMI_BUFFER_HEADER  pBuffer;				//Pointer to thread buffer info.
+    PTHREAD_LOCAL_DATA  FLink;                    //Forward Link
+    PTHREAD_LOCAL_DATA  BLink;                    //Backward Link
+    PWMI_BUFFER_HEADER  pBuffer;                  //Pointer to thread buffer info.
     LONG                ReferenceCount;
 
 } THREAD_LOCAL_DATA, *PTHREAD_LOCAL_DATA, **PPTHREAD_LOCAL_DATA;
 
-extern 
-PVOID EtwpProcessHeap;
+extern PVOID EtwpProcessHeap;
 
 #ifndef EtwpGetCycleCount
 
-__int64
-EtwpGetCycleCount();
+__int64 EtwpGetCycleCount();
 
 #endif // EtwpGetCycleCount
 
-void 
-ReleaseBufferLocation(PTHREAD_LOCAL_DATA pThreadLocalData);
+void ReleaseBufferLocation(PTHREAD_LOCAL_DATA pThreadLocalData);
 
-NTSTATUS 
-AcquireBufferLocation(PVOID *pEvent, PPTHREAD_LOCAL_DATA pThreadLocalData, PUSHORT ReqSize);
+NTSTATUS AcquireBufferLocation(PVOID *pEvent, PPTHREAD_LOCAL_DATA pThreadLocalData, PUSHORT ReqSize);
 
 typedef struct _NTDLL_EVENT_COMMON {
 
-  PVOID Handle;		        //Handle of Heap
+  PVOID Handle;                //Handle of Heap
 
 }NTDLL_EVENT_COMMON, *PNTDLL_EVENT_COMMON;
 
 
 typedef struct _NTDLL_EVENT_HANDLES {
 
-	RTL_CRITICAL_SECTION	CriticalSection;			//Critical section
-	ULONG					dwTlsIndex;					//TLS Index
-	TRACEHANDLE				hRegistrationHandle;		//Registration Handle used for Unregistration.
-	TRACEHANDLE				hLoggerHandle;				//Handle to Trace Logger
-	PTHREAD_LOCAL_DATA		pThreadListHead;	        //Link List that contains all threads info invovled in tracing.
+    RTL_CRITICAL_SECTION    CriticalSection;            //Critical section
+    ULONG                    dwTlsIndex;                    //TLS Index
+    TRACEHANDLE                hRegistrationHandle;        //Registration Handle used for Unregistration.
+    TRACEHANDLE                hLoggerHandle;                //Handle to Trace Logger
+    PTHREAD_LOCAL_DATA        pThreadListHead;            //Link List that contains all threads info invovled in tracing.
 
 }NTDLL_EVENT_HANDLES, *PNTDLL_EVENT_HANDLES, **PPNTDLL_EVENT_HANDLES;
 

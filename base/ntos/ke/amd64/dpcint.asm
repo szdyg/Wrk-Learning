@@ -87,7 +87,7 @@ KiDP10: alloc_stack 8                   ; allocate dummy vector
 
         mov     ecx, DISPATCH_LEVEL     ; set new IRQL level
 
-	ENTER_INTERRUPT	<>, <NoCount>   ; raise IRQL, do EOI, enable interrupts
+    ENTER_INTERRUPT    <>, <NoCount>   ; raise IRQL, do EOI, enable interrupts
 
         call    KiDispatchInterrupt     ; process the dispatch interrupt
 

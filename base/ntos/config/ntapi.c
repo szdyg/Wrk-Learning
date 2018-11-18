@@ -2321,7 +2321,7 @@ Return Value:
                 ProbeForWriteUlong(ResultLength);
             }
 
-			if (NT_SUCCESS(status)) {
+            if (NT_SUCCESS(status)) {
                 if ( CmAreCallbacksRegistered() ) {
                     REG_QUERY_KEY_INFORMATION QueryKeyInfo;
             
@@ -2333,23 +2333,23 @@ Return Value:
 
                     status = CmpCallCallBacks(RegNtPreQueryKey,&QueryKeyInfo,TRUE,RegNtPostQueryKey,KeyBody);
                 }
-    			if (NT_SUCCESS(status)) {
-				    //
-				    // CmQueryKey is writting to user-mode buffer
-				    //
-				    status = CmQueryKey(
-							    KeyBody->KeyControlBlock,
-							    KeyInformationClass,
-							    KeyInformation,
-							    Length,
-							    ResultLength
-							    );
+                if (NT_SUCCESS(status)) {
+                    //
+                    // CmQueryKey is writting to user-mode buffer
+                    //
+                    status = CmQueryKey(
+                                KeyBody->KeyControlBlock,
+                                KeyInformationClass,
+                                KeyInformation,
+                                Length,
+                                ResultLength
+                                );
                     // 
                     // just a notification; disregard the return status
                     //
                     CmPostCallbackNotification(RegNtPostQueryKey,KeyBody,status);
                 }
-			}
+            }
         } except (EXCEPTION_EXECUTE_HANDLER) {
             CmKdPrintEx((DPFLTR_CONFIG_ID,CML_EXCEPTION,"!!NtQueryKey: code:%08lx\n", GetExceptionCode()));
             status = GetExceptionCode();
@@ -2746,7 +2746,7 @@ Return Value:
         if (NT_SUCCESS(status)) {
 
             BEGIN_LOCK_CHECKPOINT;
-			status = CmSaveKey(
+            status = CmSaveKey(
                         KeyBody->KeyControlBlock,
                         FileHandle,
                         HSYS_MINOR
@@ -2818,7 +2818,7 @@ Return Value:
     // param validation
     //
     if ( (Format != REG_STANDARD_FORMAT) && (Format != REG_LATEST_FORMAT) && (Format != REG_NO_COMPRESSION) ) {
-	    return STATUS_INVALID_PARAMETER;
+        return STATUS_INVALID_PARAMETER;
     }
 
     //
@@ -5056,7 +5056,7 @@ Return Value:
         //
         // query open subkeys (if any)
         //
-		QueryContext.KeyBodyToIgnore = KeyBody;
+        QueryContext.KeyBodyToIgnore = KeyBody;
         QueryContext.StatusCode = STATUS_SUCCESS;
         CmpSearchForOpenSubKeys(KeyBody->KeyControlBlock,SearchAndCount,FALSE,(PVOID)(&QueryContext));
         Status = QueryContext.StatusCode;

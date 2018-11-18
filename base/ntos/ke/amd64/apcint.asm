@@ -87,7 +87,7 @@ KiAP10: alloc_stack 8                   ; allocate dummy vector
 
         mov     ecx, APC_LEVEL          ; set new IRQL level
 
-	ENTER_INTERRUPT	<>, <NoCount>   ; raise IRQL, do EOI, enable interrupts
+    ENTER_INTERRUPT    <>, <NoCount>   ; raise IRQL, do EOI, enable interrupts
 
         mov     ecx, KernelMode         ; set APC processor mode
         xor     edx, edx                ; set exception frame address

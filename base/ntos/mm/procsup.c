@@ -1177,10 +1177,10 @@ Environment:
                                   MM_SHARED_USER_DATA_VA - 1,
                                   TRUE);
 
-    	if (VadShare == NULL) {
+        if (VadShare == NULL) {
            KeDetachProcess ();
            return STATUS_NO_MEMORY;
-    	}
+        }
 
         //
         // Zero the commit charge so inserting the VAD will result in the
@@ -1196,11 +1196,11 @@ Environment:
             VadShare->u.VadFlags.CommitCharge = 0;
         }
 
-    	//
+        //
         // Insert the VAD.  Since this VAD has a commit charge, the working set
         // mutex must be held (as calls inside MiInsertVad to support routines
         // to charge commit require it), failures can occur and must be handled.
-    	//
+        //
 
         Status = MiInsertVadCharges (VadShare, ProcessToInitialize);
 

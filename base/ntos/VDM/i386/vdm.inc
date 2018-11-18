@@ -333,7 +333,7 @@ endm
 CsToLinearV86 macro
         movzx   eax,word ptr [esi].RiSegCs
         shl     eax,4
-	mov	[esi].RiCsBase,eax
+    mov    [esi].RiCsBase,eax
         mov     [esi].RiCsLimit,0FFFFh
         mov     [esi].RiCsFlags,0
 endm

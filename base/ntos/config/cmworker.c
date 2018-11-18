@@ -371,7 +371,7 @@ CmpCmdHiveOpen(
             PSECURITY_CLIENT_CONTEXT    ImpersonationContext,
             PBOOLEAN                    Allocate,
             PCMHIVE                     *NewHive,
-		    ULONG						CheckFlags
+            ULONG                        CheckFlags
             )
 /*++
 
@@ -404,7 +404,7 @@ Return Value:
                                  0,
                                  NewHive,
                                  Allocate,
-								 CheckFlags);
+                                 CheckFlags);
     //
     // NT Servers will return STATUS_ACCESS_DENIED. Netware 3.1x
     // servers could return any of the other error codes if the GUEST
@@ -431,7 +431,7 @@ Return Value:
                                          0,
                                          NewHive,
                                          Allocate,
-										 CheckFlags);
+                                         CheckFlags);
             NullHandle = NULL;
 
             PsRevertToSelf();

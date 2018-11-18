@@ -366,7 +366,7 @@ typedef struct _HBASE_BLOCK {
     ULONG           Reserved1[99];
     ULONG           CheckSum;
     ULONG           Reserved2[128*7-2];       // subtract 2 for the volatile info
-    ULONG           BootType;				// set by bootloader 
+    ULONG           BootType;                // set by bootloader 
     ULONG           BootRecover;            // set to 1 by bootloader if it did hive recovery
                                             // nobody else is using this
 } HBASE_BLOCK, *PHBASE_BLOCK;
@@ -719,11 +719,11 @@ typedef struct _HHIVE {
     struct _DUAL {
         ULONG               Length;
 #ifdef  HV_TRACK_FREE_SPACE
-        ULONG				FreeStorage;		// how many free space.
+        ULONG                FreeStorage;        // how many free space.
 #endif
         PHMAP_DIRECTORY     Map;
         PHMAP_TABLE         SmallDir;
-        ULONG               Guard;				// Always == -1
+        ULONG               Guard;                // Always == -1
 
         FREE_DISPLAY        FreeDisplay[HHIVE_FREE_DISPLAY_SIZE];   // bitmap of freecells of the corresponding size
                                                                     // for every HBLOCK_SIZE - bin in the hive, a bit

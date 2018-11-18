@@ -29,7 +29,7 @@ Abstract:
 
 #define     _64K    (64L*1024L)   //64K
 #define     _256K   (256L*1024L)  //256K
-#define		IO_BUFFER_SIZE  _64K  //64K
+#define        IO_BUFFER_SIZE  _64K  //64K
 
 #include "ntos.h"
 #include "hive.h"
@@ -1753,7 +1753,7 @@ typedef struct _QUERY_OPEN_SUBKEYS_CONTEXT {
     ULONG       RequiredSize;
     NTSTATUS    StatusCode;
     ULONG       UsedLength;
-	PVOID		KeyBodyToIgnore;
+    PVOID        KeyBodyToIgnore;
     PVOID       CurrentNameBuffer;
 } QUERY_OPEN_SUBKEYS_CONTEXT, *PQUERY_OPEN_SUBKEYS_CONTEXT;
 

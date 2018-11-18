@@ -205,7 +205,7 @@ KiIH10: call    KiBugCheckDispatch      ; bugcheck system - no return
 
         movzx   ecx, byte ptr InIrql[rsi] ; set interrupt IRQL
 
-	ENTER_INTERRUPT	<NoEOI>         ; raise IRQL and enable interrupts
+    ENTER_INTERRUPT    <NoEOI>         ; raise IRQL and enable interrupts
 
         call    KiScanInterruptObjectList ; scan interrupt object list
 
@@ -385,7 +385,7 @@ KiSI50: mov     rbx, SiFrame.SavedRbx[rsp] ; restore nonvolatile register
 
         movzx   ecx, byte ptr InIrql[rsi] ; set interrupt IRQL
 
-	ENTER_INTERRUPT <NoEOI>         ; raise IRQL and enable interrupts
+    ENTER_INTERRUPT <NoEOI>         ; raise IRQL and enable interrupts
 
         lea     rax, (-128)[rbp]        ; set trap frame address
         mov     InTrapFrame[rsi], rax   ;

@@ -25,7 +25,7 @@ extern  BOOLEAN HvShutdownComplete;     // Set to true after shutdown
                                         // to disable any further I/O
 
 
-extern	BOOLEAN CmpDontGrowLogFile;
+extern    BOOLEAN CmpDontGrowLogFile;
 
 extern  PUCHAR      CmpStashBuffer;
 extern  ULONG       CmpStashBufferSize;
@@ -2304,8 +2304,8 @@ Return Value:
     // make sure the log size accommodates the dirty data we are about to write.
     //
     {
-        ULONG	tmp;
-        ULONG	RequiredSize;
+        ULONG    tmp;
+        ULONG    RequiredSize;
 
         tmp = Hive->DirtyVector.SizeOfBitMap / 8;   // bytes
         tmp += sizeof(ULONG);                       // signature

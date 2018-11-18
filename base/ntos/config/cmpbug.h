@@ -43,7 +43,7 @@ registry tree.
 PARAMETERS
         1 - 1
         2 - Indicates the NT status code that tripped us into thinking
-			that we failed to load the hive.
+            that we failed to load the hive.
         3 - Index of hive in hivelist 
         4 - Pointer to UNICODE_STRING containing filename of hive
 
@@ -72,10 +72,10 @@ the registry they will need to reinstall or use the Emergency
 Repair Disk.
 
 PARAMETERS
-		1 - identifies the function
-		2 - identifies the line inside the function
-		3 - other info
-		4 - usually the NT status code.
+        1 - identifies the function
+        2 - identifies the line inside the function
+        3 - other info
+        4 - usually the NT status code.
 */
 
 #define BAD_SYSTEM_CONTROL_VALUES       1       // CmGetSystemControlValues
@@ -92,7 +92,7 @@ CONFIG_INITIALIZATION_FAILED     (0x67)
 PARAMETERS
     1 - indicates location in ntos\config\cmsysini that failed
     2 - location selector
-	3 - NT status code 
+    3 - NT status code 
 
 DESCRIPTION
 This means the registry couldn't allocate the pool needed to contain the
@@ -117,9 +117,9 @@ mapped file. This usually happens if the system is out of pool and
 we cannot reopen the hive. 
 
 PARAMETERS
-		1 - 1
-		2 - Indicates the NT status code that tripped us into thinking
-			that we failed to convert the hive.
+        1 - 1
+        2 - Indicates the NT status code that tripped us into thinking
+            that we failed to convert the hive.
 
 DESCRIPTION
 Normally you shouldn't see this as the conversion happens at early 
@@ -184,8 +184,8 @@ in by the security system, and then only when resource limits are encountered.
 
 #define HANDLES_STILL_OPEN_AT_SHUTDOWN  0xF         // CmFreeAllMemory
 
-#define COMPRESS_HIVE					0x10        // CmCompressKey
+#define COMPRESS_HIVE                    0x10        // CmCompressKey
 
-#define ALLOC_ERROR						0x11        // CmpFreeKeyControlBlock
+#define ALLOC_ERROR                        0x11        // CmpFreeKeyControlBlock
 
 #endif  // _CMPBUG_

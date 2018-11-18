@@ -346,7 +346,7 @@ WmipSendNotification(
     PWMI_LOGGER_CONTEXT LoggerContext,
     NTSTATUS            Status,
     ULONG               Flag
-	);
+    );
 
 #if DBG
 VOID

@@ -78,7 +78,7 @@ Return Value:
     Context->SegSs = KGDT_R3_DATA;
     Context->SegCs = KGDT_R3_CODE;
 
-    Context->EFlags = 0x200L;	    // force interrupts on, clear all else.
+    Context->EFlags = 0x200L;        // force interrupts on, clear all else.
 
     //
     // Even though these are optional, they are used as is, since NULL
@@ -101,10 +101,10 @@ Return Value:
 
     Context->Esp -= sizeof(Parameter);
     ZwWriteVirtualMemory(Process,
-			 (PVOID)Context->Esp,
-			 (PVOID)&Parameter,
-			 sizeof(Parameter),
-			 NULL);
+             (PVOID)Context->Esp,
+             (PVOID)&Parameter,
+             sizeof(Parameter),
+             NULL);
     Context->Esp -= sizeof(Parameter); // Reserve room for ret address
 
 
@@ -193,38 +193,38 @@ Return Value:
 
 
     //
-    //	Pass all parameters on the stack, regardless of whether a
-    //	a context record is passed.
+    //    Pass all parameters on the stack, regardless of whether a
+    //    a context record is passed.
     //
 
     //
-    //	Put Context Record on stack first, so it is above other args.
+    //    Put Context Record on stack first, so it is above other args.
     //
     NewSp = Context.Esp;
     if (PassContext) {
-	NewSp -= sizeof( CONTEXT );
-	Status = NtWriteVirtualMemory( Process,
-				       (PVOID)NewSp,
-				       &Context,
-				       sizeof( CONTEXT ),
-				       NULL
-				    );
-	if (!NT_SUCCESS( Status )) {
+    NewSp -= sizeof( CONTEXT );
+    Status = NtWriteVirtualMemory( Process,
+                       (PVOID)NewSp,
+                       &Context,
+                       sizeof( CONTEXT ),
+                       NULL
+                    );
+    if (!NT_SUCCESS( Status )) {
             if (!AlreadySuspended) {
                 NtResumeThread( Thread, NULL );
                 }
-	    return( Status );
-	    }
+        return( Status );
+        }
         ArgumentsCopy[0] = NewSp;   // pass pointer to context
         RtlCopyMemory(&(ArgumentsCopy[1]),Arguments,ArgumentCount*sizeof( ULONG ));
         ArgumentCount++;
-	}
+    }
     else {
         RtlCopyMemory(ArgumentsCopy,Arguments,ArgumentCount*sizeof( ULONG ));
         }
 
     //
-    //	Copy the arguments onto the target stack
+    //    Copy the arguments onto the target stack
     //
     if (ArgumentCount) {
         NewSp -= ArgumentCount * sizeof( ULONG );

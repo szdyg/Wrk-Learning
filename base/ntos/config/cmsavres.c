@@ -293,7 +293,7 @@ Return Value:
         // we couldn't map the bin containing this cell
         //
         CmpUnlockRegistry();
-		return STATUS_INSUFFICIENT_RESOURCES;
+        return STATUS_INSUFFICIENT_RESOURCES;
     }
     // release the cell right here as we are holding the reglock exclusive
     HvReleaseCell(Hive,Cell);
@@ -1878,104 +1878,104 @@ Return Value:
 
 NTSTATUS
 CmpOverwriteHive(
-					PCMHIVE			CmHive,
-					PCMHIVE			NewHive,
-					HCELL_INDEX		LinkCell
-					)
+                    PCMHIVE            CmHive,
+                    PCMHIVE            NewHive,
+                    HCELL_INDEX        LinkCell
+                    )
 {
-	HCELL_INDEX             RootCell;
-	BOOLEAN					Result;
-	PCM_KEY_NODE			RootNode;
-    PULONG					Vector;
-	ULONG					Length;
+    HCELL_INDEX             RootCell;
+    BOOLEAN                    Result;
+    PCM_KEY_NODE            RootNode;
+    PULONG                    Vector;
+    ULONG                    Length;
 
     CM_PAGED_CODE();
 
-	// get rid of the views.
-	CmpDestroyHiveViewList (CmHive);
+    // get rid of the views.
+    CmpDestroyHiveViewList (CmHive);
 
     RootCell = NewHive->Hive.BaseBlock->RootCell;
 
-	RootNode = (PCM_KEY_NODE)HvGetCell(&(NewHive->Hive),RootCell);
-	if( RootNode == NULL ) {
+    RootNode = (PCM_KEY_NODE)HvGetCell(&(NewHive->Hive),RootCell);
+    if( RootNode == NULL ) {
         return STATUS_INSUFFICIENT_RESOURCES;
-	}
-	if( !HvMarkCellDirty(&(NewHive->Hive),RootCell, FALSE) ) {
-		HvReleaseCell(&(NewHive->Hive),RootCell);
+    }
+    if( !HvMarkCellDirty(&(NewHive->Hive),RootCell, FALSE) ) {
+        HvReleaseCell(&(NewHive->Hive),RootCell);
         return STATUS_NO_LOG_SPACE;
-	}
-	RootNode->Parent = LinkCell;
-	RootNode->Flags |= KEY_HIVE_ENTRY | KEY_NO_DELETE;
-	HvReleaseCell(&(NewHive->Hive),RootCell);
-	//
-	// dump data over to the log and primary
-	//
-	ASSERT( NewHive->Hive.DirtyVector.Buffer == NULL );
-	ASSERT( NewHive->Hive.DirtyAlloc == 0 );
-	Length = NewHive->Hive.Storage[Stable].Length;
-	Vector = (PULONG)((NewHive->Hive.Allocate)(ROUND_UP(Length /HSECTOR_SIZE/8,sizeof(ULONG)),TRUE,CM_FIND_LEAK_TAG22));
-	if (Vector == NULL) {
-		return STATUS_NO_MEMORY;
-	}
-	RtlZeroMemory(Vector, Length / HSECTOR_SIZE / 8);
+    }
+    RootNode->Parent = LinkCell;
+    RootNode->Flags |= KEY_HIVE_ENTRY | KEY_NO_DELETE;
+    HvReleaseCell(&(NewHive->Hive),RootCell);
+    //
+    // dump data over to the log and primary
+    //
+    ASSERT( NewHive->Hive.DirtyVector.Buffer == NULL );
+    ASSERT( NewHive->Hive.DirtyAlloc == 0 );
+    Length = NewHive->Hive.Storage[Stable].Length;
+    Vector = (PULONG)((NewHive->Hive.Allocate)(ROUND_UP(Length /HSECTOR_SIZE/8,sizeof(ULONG)),TRUE,CM_FIND_LEAK_TAG22));
+    if (Vector == NULL) {
+        return STATUS_NO_MEMORY;
+    }
+    RtlZeroMemory(Vector, Length / HSECTOR_SIZE / 8);
     RtlInitializeBitMap(&(NewHive->Hive.DirtyVector), Vector, Length / HSECTOR_SIZE);
-	NewHive->Hive.DirtyAlloc = ROUND_UP(Length /HSECTOR_SIZE/8,sizeof(ULONG));
+    NewHive->Hive.DirtyAlloc = ROUND_UP(Length /HSECTOR_SIZE/8,sizeof(ULONG));
     RtlSetAllBits(&(NewHive->Hive.DirtyVector));
     NewHive->Hive.DirtyCount = NewHive->Hive.DirtyVector.SizeOfBitMap;
     NewHive->Hive.Log = TRUE;
 
-	NewHive->FileHandles[HFILE_TYPE_LOG] = CmHive->FileHandles[HFILE_TYPE_LOG];
-	
-	Result = HvpGrowLog2(&(NewHive->Hive), Length);
-	if( Result) {
-		Result = HvpWriteLog(&(NewHive->Hive));
-	}
+    NewHive->FileHandles[HFILE_TYPE_LOG] = CmHive->FileHandles[HFILE_TYPE_LOG];
+    
+    Result = HvpGrowLog2(&(NewHive->Hive), Length);
+    if( Result) {
+        Result = HvpWriteLog(&(NewHive->Hive));
+    }
 
-	NewHive->FileHandles[HFILE_TYPE_LOG] = NULL;
-	
-	NewHive->Hive.Free(Vector,NewHive->Hive.DirtyAlloc);
-	NewHive->Hive.DirtyAlloc = 0;
-	NewHive->Hive.DirtyCount = 0;
-	RtlZeroMemory(&(NewHive->Hive.DirtyVector),sizeof(RTL_BITMAP));
+    NewHive->FileHandles[HFILE_TYPE_LOG] = NULL;
+    
+    NewHive->Hive.Free(Vector,NewHive->Hive.DirtyAlloc);
+    NewHive->Hive.DirtyAlloc = 0;
+    NewHive->Hive.DirtyCount = 0;
+    RtlZeroMemory(&(NewHive->Hive.DirtyVector),sizeof(RTL_BITMAP));
     NewHive->Hive.Log = FALSE;
 
-	if( !Result ) {
+    if( !Result ) {
         return STATUS_REGISTRY_IO_FAILED;
-	}
-	NewHive->FileHandles[HFILE_TYPE_EXTERNAL] = CmHive->FileHandles[HFILE_TYPE_PRIMARY];
-	//
-	// all data in the new hive is marked as dirty !!!
-	// even if this fails; we are going to keep the hive in memory, so no problem, we have the log !
-	//
-	NewHive->FileObject = CmHive->FileObject;
+    }
+    NewHive->FileHandles[HFILE_TYPE_EXTERNAL] = CmHive->FileHandles[HFILE_TYPE_PRIMARY];
+    //
+    // all data in the new hive is marked as dirty !!!
+    // even if this fails; we are going to keep the hive in memory, so no problem, we have the log !
+    //
+    NewHive->FileObject = CmHive->FileObject;
     NewHive->Hive.BaseBlock->Type = HFILE_TYPE_PRIMARY;
-	HvWriteHive(&(NewHive->Hive),Length <= CmHive->Hive.Storage[Stable].Length ? TRUE : FALSE,CmHive->FileObject != NULL ? TRUE : FALSE,TRUE);
-	NewHive->FileHandles[HFILE_TYPE_EXTERNAL] = NULL;
-	NewHive->FileObject = NULL;
+    HvWriteHive(&(NewHive->Hive),Length <= CmHive->Hive.Storage[Stable].Length ? TRUE : FALSE,CmHive->FileObject != NULL ? TRUE : FALSE,TRUE);
+    NewHive->FileHandles[HFILE_TYPE_EXTERNAL] = NULL;
+    NewHive->FileObject = NULL;
 
     RtlClearAllBits(&(NewHive->Hive.DirtyVector));
     NewHive->Hive.DirtyCount = 0;
-	return STATUS_SUCCESS;
+    return STATUS_SUCCESS;
 }
 
 
 VOID
-CmpSwitchStorageAndRebuildMappings(PCMHIVE	OldCmHive,
-								   PCMHIVE	NewCmHive
-								   ) 
+CmpSwitchStorageAndRebuildMappings(PCMHIVE    OldCmHive,
+                                   PCMHIVE    NewCmHive
+                                   ) 
 /*++
 
 Routine Description:
 
     Switches relevant storage between the hives. Then, rebuilds 
-	the kcb mapping according with the mapping stored inside OldHive
+    the kcb mapping according with the mapping stored inside OldHive
 
 Arguments:
 
     OldHive - Hive to be updated; the one that is currently linked in 
-	the registry tree
+    the registry tree
 
-	NewHive - the compressed hive; it'll be freed after this operation.
+    NewHive - the compressed hive; it'll be freed after this operation.
 
 Return Value:
 
@@ -1984,50 +1984,50 @@ Return Value:
 --*/
 {
 
-	HHIVE							TmpHive;
-    ULONG							i;
-    PCM_KCB_REMAP_BLOCK				RemapBlock;
-	PLIST_ENTRY						AnchorAddr;
-	LOGICAL							OldSmallDir;
-	LOGICAL							NewSmallDir;
+    HHIVE                            TmpHive;
+    ULONG                            i;
+    PCM_KCB_REMAP_BLOCK                RemapBlock;
+    PLIST_ENTRY                        AnchorAddr;
+    LOGICAL                            OldSmallDir;
+    LOGICAL                            NewSmallDir;
     PFREE_HBIN                      FreeBin;
     PCM_KNODE_REMAP_BLOCK           KnodeRemapBlock;
 
-	CM_PAGED_CODE();
+    CM_PAGED_CODE();
 
-	//
-	// The baseblock
-	//
+    //
+    // The baseblock
+    //
     OldCmHive->Hive.BaseBlock->Sequence1 = NewCmHive->Hive.BaseBlock->Sequence1;
     OldCmHive->Hive.BaseBlock->Sequence2 = NewCmHive->Hive.BaseBlock->Sequence2;
     OldCmHive->Hive.BaseBlock->RootCell = NewCmHive->Hive.BaseBlock->RootCell;
     
-	//
-	// rest of the hive 
-	//
-	ASSERT( (NewCmHive->Hive.DirtyVector.Buffer == NULL) && 
-			(NewCmHive->Hive.DirtyCount == 0) &&
-			(NewCmHive->Hive.DirtyAlloc == 0) &&
-			(OldCmHive->Hive.Storage[Stable].Length >= NewCmHive->Hive.Storage[Stable].Length) );
+    //
+    // rest of the hive 
+    //
+    ASSERT( (NewCmHive->Hive.DirtyVector.Buffer == NULL) && 
+            (NewCmHive->Hive.DirtyCount == 0) &&
+            (NewCmHive->Hive.DirtyAlloc == 0) &&
+            (OldCmHive->Hive.Storage[Stable].Length >= NewCmHive->Hive.Storage[Stable].Length) );
 
-	OldCmHive->Hive.LogSize = NewCmHive->Hive.LogSize;
-	NewCmHive->Hive.LogSize = 0;
+    OldCmHive->Hive.LogSize = NewCmHive->Hive.LogSize;
+    NewCmHive->Hive.LogSize = 0;
 
 
-	//
-	// switch hive stable storage; preserving the volatile info
-	//
-	OldSmallDir = (OldCmHive->Hive.Storage[Stable].Map == (PHMAP_DIRECTORY)&(OldCmHive->Hive.Storage[Stable].SmallDir));
-	NewSmallDir = (NewCmHive->Hive.Storage[Stable].Map == (PHMAP_DIRECTORY)&(NewCmHive->Hive.Storage[Stable].SmallDir));
-	RtlCopyMemory(&(TmpHive.Storage[Stable]),&(OldCmHive->Hive.Storage[Stable]),sizeof(TmpHive.Storage[Stable]) - sizeof(LIST_ENTRY) );
-	RtlCopyMemory(&(OldCmHive->Hive.Storage[Stable]),&(NewCmHive->Hive.Storage[Stable]),sizeof(TmpHive.Storage[Stable]) - sizeof(LIST_ENTRY) );
-	RtlCopyMemory(&(NewCmHive->Hive.Storage[Stable]),&(TmpHive.Storage[Stable]),sizeof(TmpHive.Storage[Stable])  - sizeof(LIST_ENTRY) );
-	if( OldSmallDir ) {
+    //
+    // switch hive stable storage; preserving the volatile info
+    //
+    OldSmallDir = (OldCmHive->Hive.Storage[Stable].Map == (PHMAP_DIRECTORY)&(OldCmHive->Hive.Storage[Stable].SmallDir));
+    NewSmallDir = (NewCmHive->Hive.Storage[Stable].Map == (PHMAP_DIRECTORY)&(NewCmHive->Hive.Storage[Stable].SmallDir));
+    RtlCopyMemory(&(TmpHive.Storage[Stable]),&(OldCmHive->Hive.Storage[Stable]),sizeof(TmpHive.Storage[Stable]) - sizeof(LIST_ENTRY) );
+    RtlCopyMemory(&(OldCmHive->Hive.Storage[Stable]),&(NewCmHive->Hive.Storage[Stable]),sizeof(TmpHive.Storage[Stable]) - sizeof(LIST_ENTRY) );
+    RtlCopyMemory(&(NewCmHive->Hive.Storage[Stable]),&(TmpHive.Storage[Stable]),sizeof(TmpHive.Storage[Stable])  - sizeof(LIST_ENTRY) );
+    if( OldSmallDir ) {
         NewCmHive->Hive.Storage[Stable].Map = (PHMAP_DIRECTORY)&(NewCmHive->Hive.Storage[Stable].SmallDir);
-	}
-	if( NewSmallDir ) {
+    }
+    if( NewSmallDir ) {
         OldCmHive->Hive.Storage[Stable].Map = (PHMAP_DIRECTORY)&(OldCmHive->Hive.Storage[Stable].SmallDir);
-	}
+    }
     //
     // For FreeBins we have to take special precaution and move them manually from one list to another
     //
@@ -2048,96 +2048,96 @@ Return Value:
     }
     ASSERT( IsListEmpty(&(OldCmHive->Hive.Storage[Stable].FreeBins)) );
 
-	ASSERT( IsListEmpty(&(OldCmHive->LRUViewListHead)) && (OldCmHive->MappedViews == 0) && (OldCmHive->UseCount == 0) );
-	ASSERT( IsListEmpty(&(NewCmHive->LRUViewListHead)) && (NewCmHive->MappedViews == 0) && (OldCmHive->UseCount == 0) );
+    ASSERT( IsListEmpty(&(OldCmHive->LRUViewListHead)) && (OldCmHive->MappedViews == 0) && (OldCmHive->UseCount == 0) );
+    ASSERT( IsListEmpty(&(NewCmHive->LRUViewListHead)) && (NewCmHive->MappedViews == 0) && (OldCmHive->UseCount == 0) );
 
-	ASSERT( IsListEmpty(&(OldCmHive->PinViewListHead)) && (OldCmHive->PinnedViews == 0) );
-	ASSERT( IsListEmpty(&(NewCmHive->PinViewListHead)) && (NewCmHive->PinnedViews == 0) );
-	
-	//
-	// now the security cache; we preserve the security cache; only that we go through it and 
+    ASSERT( IsListEmpty(&(OldCmHive->PinViewListHead)) && (OldCmHive->PinnedViews == 0) );
+    ASSERT( IsListEmpty(&(NewCmHive->PinViewListHead)) && (NewCmHive->PinnedViews == 0) );
+    
+    //
+    // now the security cache; we preserve the security cache; only that we go through it and 
     // shift cells accordingly
-	//
+    //
     for( i=0;i<OldCmHive->SecurityCount;i++) {
-		if( HvGetCellType(OldCmHive->SecurityCache[i].Cell) == (ULONG)Stable ) {
+        if( HvGetCellType(OldCmHive->SecurityCache[i].Cell) == (ULONG)Stable ) {
             ASSERT( OldCmHive->SecurityCache[i].Cell == OldCmHive->CellRemapArray[i].OldCell );
             ASSERT( OldCmHive->SecurityCache[i].Cell ==  OldCmHive->SecurityCache[i].CachedSecurity->Cell);
             OldCmHive->SecurityCache[i].Cell = OldCmHive->CellRemapArray[i].NewCell;
             OldCmHive->SecurityCache[i].CachedSecurity->Cell = OldCmHive->CellRemapArray[i].NewCell;
-		} 
+        } 
     }
 
-	//
-	// now restore mappings for kcbs KeyCells 
-	//
-	AnchorAddr = &(OldCmHive->KcbConvertListHead);
-	RemapBlock = (PCM_KCB_REMAP_BLOCK)(OldCmHive->KcbConvertListHead.Flink);
+    //
+    // now restore mappings for kcbs KeyCells 
+    //
+    AnchorAddr = &(OldCmHive->KcbConvertListHead);
+    RemapBlock = (PCM_KCB_REMAP_BLOCK)(OldCmHive->KcbConvertListHead.Flink);
 
-	while ( RemapBlock != (PCM_KCB_REMAP_BLOCK)AnchorAddr ) {
-		RemapBlock = CONTAINING_RECORD(
-						RemapBlock,
-						CM_KCB_REMAP_BLOCK,
-						RemapList
-						);
-		ASSERT( RemapBlock->OldCellIndex != HCELL_NIL );
+    while ( RemapBlock != (PCM_KCB_REMAP_BLOCK)AnchorAddr ) {
+        RemapBlock = CONTAINING_RECORD(
+                        RemapBlock,
+                        CM_KCB_REMAP_BLOCK,
+                        RemapList
+                        );
+        ASSERT( RemapBlock->OldCellIndex != HCELL_NIL );
 
-		if( (HvGetCellType(RemapBlock->KeyControlBlock->KeyCell) == (ULONG)Stable) &&  // we are preserving volatile storage
-			(!(RemapBlock->KeyControlBlock->ExtFlags & CM_KCB_KEY_NON_EXIST)) // don't mess with fake kcbs
-			) {
-			ASSERT( RemapBlock->NewCellIndex != HCELL_NIL );
-			RemapBlock->KeyControlBlock->KeyCell = RemapBlock->NewCellIndex;
-		}
-		//
-		// invalidate the cache
-		//
+        if( (HvGetCellType(RemapBlock->KeyControlBlock->KeyCell) == (ULONG)Stable) &&  // we are preserving volatile storage
+            (!(RemapBlock->KeyControlBlock->ExtFlags & CM_KCB_KEY_NON_EXIST)) // don't mess with fake kcbs
+            ) {
+            ASSERT( RemapBlock->NewCellIndex != HCELL_NIL );
+            RemapBlock->KeyControlBlock->KeyCell = RemapBlock->NewCellIndex;
+        }
+        //
+        // invalidate the cache
+        //
         if( (!(RemapBlock->KeyControlBlock->Flags & KEY_PREDEF_HANDLE) ) && // don't mess with predefined handles
-			(!(RemapBlock->KeyControlBlock->ExtFlags & (CM_KCB_KEY_NON_EXIST|CM_KCB_SYM_LINK_FOUND))) && // don't mess with fake kcbs or symlinks
-			(HvGetCellType(RemapBlock->KeyControlBlock->KeyCell) == (ULONG)Stable) // we are preserving volatile storage
-			) {
-			CmpCleanUpKcbValueCache(RemapBlock->KeyControlBlock);
-			CmpSetUpKcbValueCache(RemapBlock->KeyControlBlock,RemapBlock->ValueCount,RemapBlock->ValueList);
-		}
+            (!(RemapBlock->KeyControlBlock->ExtFlags & (CM_KCB_KEY_NON_EXIST|CM_KCB_SYM_LINK_FOUND))) && // don't mess with fake kcbs or symlinks
+            (HvGetCellType(RemapBlock->KeyControlBlock->KeyCell) == (ULONG)Stable) // we are preserving volatile storage
+            ) {
+            CmpCleanUpKcbValueCache(RemapBlock->KeyControlBlock);
+            CmpSetUpKcbValueCache(RemapBlock->KeyControlBlock,RemapBlock->ValueCount,RemapBlock->ValueList);
+        }
         //
         // skip to the next element
         //
         RemapBlock = (PCM_KCB_REMAP_BLOCK)(RemapBlock->RemapList.Flink);
-	}
+    }
 
-	//
-	// now restore mappings for volatile Knodes
-	//
-	AnchorAddr = &(OldCmHive->KnodeConvertListHead);
-	KnodeRemapBlock = (PCM_KNODE_REMAP_BLOCK)(OldCmHive->KnodeConvertListHead.Flink);
+    //
+    // now restore mappings for volatile Knodes
+    //
+    AnchorAddr = &(OldCmHive->KnodeConvertListHead);
+    KnodeRemapBlock = (PCM_KNODE_REMAP_BLOCK)(OldCmHive->KnodeConvertListHead.Flink);
 
-	while ( KnodeRemapBlock != (PCM_KNODE_REMAP_BLOCK)AnchorAddr ) {
-		KnodeRemapBlock = CONTAINING_RECORD(
-						KnodeRemapBlock,
-						CM_KNODE_REMAP_BLOCK,
-						RemapList
-						);
-	    KnodeRemapBlock->KeyNode->Parent = KnodeRemapBlock->NewParent;
+    while ( KnodeRemapBlock != (PCM_KNODE_REMAP_BLOCK)AnchorAddr ) {
+        KnodeRemapBlock = CONTAINING_RECORD(
+                        KnodeRemapBlock,
+                        CM_KNODE_REMAP_BLOCK,
+                        RemapList
+                        );
+        KnodeRemapBlock->KeyNode->Parent = KnodeRemapBlock->NewParent;
        
         //
         // skip to the next element
         //
         KnodeRemapBlock = (PCM_KNODE_REMAP_BLOCK)(KnodeRemapBlock->RemapList.Flink);
-	}
+    }
 
 
 }
 
 NTSTATUS
 CmpShiftHiveFreeBins(
-					  PCMHIVE			CmHive,
-					  PCMHIVE			*NewHive
-					  )
+                      PCMHIVE            CmHive,
+                      PCMHIVE            *NewHive
+                      )
 /*++
 
 Routine Description:
 
 Arguments:
 
-	CmHive - the hive to compress
+    CmHive - the hive to compress
 
     NewHive - hive with the free bins shifted to the end.
 
@@ -2149,15 +2149,15 @@ Return Value:
 {
     NTSTATUS                status;
     PHHIVE                  Hive;
-	HCELL_INDEX             RootCell;
+    HCELL_INDEX             RootCell;
     ULONG                   NewLength;
 
     CM_PAGED_CODE();
 
     ASSERT_CM_LOCK_OWNED_EXCLUSIVE();
-	ASSERT( !IsListEmpty(&(CmHive->Hive.Storage[Stable].FreeBins)) );
+    ASSERT( !IsListEmpty(&(CmHive->Hive.Storage[Stable].FreeBins)) );
 
-	*NewHive = NULL;
+    *NewHive = NULL;
     //
     // Disallow attempts to "save" a hive which cannot be saved.
     //
@@ -2166,21 +2166,21 @@ Return Value:
 
 
     if ( (Hive == &CmpMasterHive->Hive) ||
-		 ( (Hive->HiveFlags & HIVE_NOLAZYFLUSH) && (Hive->DirtyCount != 0) ) ||
+         ( (Hive->HiveFlags & HIVE_NOLAZYFLUSH) && (Hive->DirtyCount != 0) ) ||
          (CmHive->FileHandles[HFILE_TYPE_PRIMARY] == NULL) 
        ) {
         return STATUS_ACCESS_DENIED;
     }
 
 
-	if(Hive->DirtyCount != 0) {
-		//
-		// need to flush the hive as we will replace it with the compressed one.
-		//
-		if( !HvSyncHive(Hive) ) {
-	        return STATUS_ACCESS_DENIED;
-		}
-	}
+    if(Hive->DirtyCount != 0) {
+        //
+        // need to flush the hive as we will replace it with the compressed one.
+        //
+        if( !HvSyncHive(Hive) ) {
+            return STATUS_ACCESS_DENIED;
+        }
+    }
 
     //
     // The subtree the caller wants does not exactly match a
@@ -2266,7 +2266,7 @@ Routine Description:
 
 Arguments:
 
-	NewHive - hive to remap
+    NewHive - hive to remap
     
     OldHive - the old hive - will use volatile from it (temporary)
 
@@ -2301,9 +2301,9 @@ Return Value:
     // update the security mapping array
     //
     for( i=0;i<OldHive->SecurityCount;i++) {
-		if( HvGetCellType(OldHive->SecurityCache[i].Cell) == (ULONG)Stable ) {
-			OldHive->CellRemapArray[i].NewCell = HvShiftCell(NewHive,OldHive->CellRemapArray[i].OldCell);
-		} 
+        if( HvGetCellType(OldHive->SecurityCache[i].Cell) == (ULONG)Stable ) {
+            OldHive->CellRemapArray[i].NewCell = HvShiftCell(NewHive,OldHive->CellRemapArray[i].OldCell);
+        } 
     }
     
     Result =  CmpShiftAllCells2(NewHive,OldHive,NewHive->BaseBlock->RootCell, HCELL_NIL);
@@ -2330,7 +2330,7 @@ Routine Description:
 
 Arguments:
 
-	CmHive - hive to remap
+    CmHive - hive to remap
 
 Return Value:
 
@@ -2408,7 +2408,7 @@ Return Value:
             //
             // add all volatile nodes to the volatile list
             //
-	        PCM_KNODE_REMAP_BLOCK		knodeRemapBlock;
+            PCM_KNODE_REMAP_BLOCK        knodeRemapBlock;
 
             for(i = 0; i<Node->SubKeyCounts[Volatile];i++) {
                 SubKey = CmpFindSubKeyByNumber(Hive,
@@ -2417,13 +2417,13 @@ Return Value:
                 ASSERT( SubKey != HCELL_NIL ); 
 
                 knodeRemapBlock = (PCM_KNODE_REMAP_BLOCK)ExAllocatePool(PagedPool, sizeof(CM_KNODE_REMAP_BLOCK));
-		        if( knodeRemapBlock == NULL ) {
-			        Result = FALSE;
+                if( knodeRemapBlock == NULL ) {
+                    Result = FALSE;
                     break;
-		        }
+                }
                 ASSERT( HvGetCellType(SubKey) == (ULONG)Volatile );
                 knodeRemapBlock->KeyNode = (PCM_KEY_NODE)HvGetCell(Hive,SubKey);;
-	            knodeRemapBlock->NewParent = HvShiftCell(Hive,CheckStack[StackIndex].Cell);
+                knodeRemapBlock->NewParent = HvShiftCell(Hive,CheckStack[StackIndex].Cell);
 
                 InsertTailList(&(OldHive->KnodeConvertListHead),&(knodeRemapBlock->RemapList));
             }
@@ -2504,7 +2504,7 @@ CmpShiftKey(PHHIVE      Hive,
             )
 {
     PCM_KEY_NODE            Node;
-	PCM_KCB_REMAP_BLOCK		RemapBlock;
+    PCM_KCB_REMAP_BLOCK        RemapBlock;
     PLIST_ENTRY             AnchorAddr;
 
     Node = (PCM_KEY_NODE)HvGetCell(Hive,Cell);
@@ -2532,34 +2532,34 @@ CmpShiftKey(PHHIVE      Hive,
     }
 
     //
-	// walk the KcbConvertListHead and store the mappings
-	//
-	AnchorAddr = &(OldHive->KcbConvertListHead);
-	RemapBlock = (PCM_KCB_REMAP_BLOCK)(OldHive->KcbConvertListHead.Flink);
+    // walk the KcbConvertListHead and store the mappings
+    //
+    AnchorAddr = &(OldHive->KcbConvertListHead);
+    RemapBlock = (PCM_KCB_REMAP_BLOCK)(OldHive->KcbConvertListHead.Flink);
 
-	while ( RemapBlock != (PCM_KCB_REMAP_BLOCK)AnchorAddr ) {
-		RemapBlock = CONTAINING_RECORD(
-						RemapBlock,
-						CM_KCB_REMAP_BLOCK,
-						RemapList
-						);
-		ASSERT( RemapBlock->OldCellIndex != HCELL_NIL );
-		if( RemapBlock->OldCellIndex == Cell ) {
-			//
-			// found it !
-			//
-			// can only be set once 
-			ASSERT( RemapBlock->NewCellIndex == HCELL_NIL );
-			RemapBlock->NewCellIndex = HvShiftCell(Hive,Cell);;
-		    RemapBlock->ValueCount = Node->ValueList.Count;
-		    RemapBlock->ValueList = Node->ValueList.List;
-			break;
-		}
+    while ( RemapBlock != (PCM_KCB_REMAP_BLOCK)AnchorAddr ) {
+        RemapBlock = CONTAINING_RECORD(
+                        RemapBlock,
+                        CM_KCB_REMAP_BLOCK,
+                        RemapList
+                        );
+        ASSERT( RemapBlock->OldCellIndex != HCELL_NIL );
+        if( RemapBlock->OldCellIndex == Cell ) {
+            //
+            // found it !
+            //
+            // can only be set once 
+            ASSERT( RemapBlock->NewCellIndex == HCELL_NIL );
+            RemapBlock->NewCellIndex = HvShiftCell(Hive,Cell);;
+            RemapBlock->ValueCount = Node->ValueList.Count;
+            RemapBlock->ValueList = Node->ValueList.List;
+            break;
+        }
         //
         // skip to the next element
         //
         RemapBlock = (PCM_KCB_REMAP_BLOCK)(RemapBlock->RemapList.Flink);
-	}
+    }
 
 }
 

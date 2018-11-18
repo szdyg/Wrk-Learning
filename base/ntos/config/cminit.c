@@ -190,12 +190,12 @@ Return Value:
     // Share the file if needed
     //
     if (CmpMiniNTBoot && CmpShareSystemHives) {
-    	DesiredAccess = FILE_READ_DATA;
-    	ShareMode = FILE_SHARE_READ;	
+        DesiredAccess = FILE_READ_DATA;
+        ShareMode = FILE_SHARE_READ;    
     } else {
-    	ShareMode = 0;
-    	DesiredAccess = FILE_READ_DATA | FILE_WRITE_DATA;
-    }				
+        ShareMode = 0;
+        DesiredAccess = FILE_READ_DATA | FILE_WRITE_DATA;
+    }                
 
     status = ZwCreateFile(
                 Primary,
@@ -633,7 +633,7 @@ Return Value:
 
     InitializeListHead(&(cmhive2->KcbConvertListHead));
     InitializeListHead(&(cmhive2->KnodeConvertListHead));
-	cmhive2->CellRemapArray	= NULL;
+    cmhive2->CellRemapArray    = NULL;
 
     //
     // Allocate the mutex from NonPagedPool so it will not be swapped to the disk

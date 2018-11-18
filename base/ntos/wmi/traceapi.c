@@ -1779,8 +1779,8 @@ NOTE:
         size  = (USHORT) ((MessageFlags&TRACE_MESSAGE_SEQUENCE ? sizeof(ULONG):0) +
                 (MessageFlags&TRACE_MESSAGE_GUID ? sizeof(GUID):0) +
                 (MessageFlags&TRACE_MESSAGE_COMPONENTID ? sizeof(ULONG):0) +
-        	    (MessageFlags&(TRACE_MESSAGE_TIMESTAMP | TRACE_MESSAGE_PERFORMANCE_TIMESTAMP) ? sizeof(LARGE_INTEGER):0) +
-         	    (MessageFlags&TRACE_MESSAGE_SYSTEMINFO ? 2 * sizeof(ULONG):0) +
+                (MessageFlags&(TRACE_MESSAGE_TIMESTAMP | TRACE_MESSAGE_PERFORMANCE_TIMESTAMP) ? sizeof(LARGE_INTEGER):0) +
+                 (MessageFlags&TRACE_MESSAGE_SYSTEMINFO ? 2 * sizeof(ULONG):0) +
                 sizeof (MESSAGE_TRACE_HEADER) +
                 dataBytes);
 
@@ -1893,7 +1893,7 @@ NOTE:
         // [First Entry] Sequence Number
         if (MessageFlags&TRACE_MESSAGE_SEQUENCE) {
             *((PULONG)pMessageData) = SequenceNumber;
-        	pMessageData += sizeof(ULONG) ;
+            pMessageData += sizeof(ULONG) ;
         }
 
         // [Second Entry] GUID ? or CompnentID ?
@@ -1902,7 +1902,7 @@ NOTE:
             pMessageData += sizeof(ULONG) ;
         } else if (MessageFlags&TRACE_MESSAGE_GUID) { // Can't have both
             *((LPGUID)pMessageData) = *MessageGuid;
-        	pMessageData += sizeof(GUID) ;
+            pMessageData += sizeof(GUID) ;
         }
         
         // [Third Entry] Timestamp?
@@ -2394,12 +2394,12 @@ Return Value:
                 if (TraceInformationLength != sizeof(TraceHandle) ) {
                     return STATUS_INFO_LENGTH_MISMATCH;
                 }
-	            if (uString == NULL) {
-		            return STATUS_INVALID_PARAMETER;
-	            }
-	            if (uString->Buffer == NULL || uString->Length == 0) {
-		            return STATUS_INVALID_PARAMETER;
-	            }
+                if (uString == NULL) {
+                    return STATUS_INVALID_PARAMETER;
+                }
+                if (uString->Buffer == NULL || uString->Length == 0) {
+                    return STATUS_INVALID_PARAMETER;
+                }
 
                 RtlZeroMemory(&LoggerInfo, sizeof(LoggerInfo));
                 LoggerInfo.Wnode.BufferSize = sizeof(LoggerInfo);

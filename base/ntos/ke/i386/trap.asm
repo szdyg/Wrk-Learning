@@ -95,7 +95,7 @@ endif
         extrn   _KeI386VirtualIntExtensions:dword
         EXTRNP  _NTFastDOSIO,2
         EXTRNP  _NtSetLdtEntries,6
-	EXTRNP  _NtCallbackReturn,3
+    EXTRNP  _NtCallbackReturn,3
         extrn   OpcodeIndex:byte
         extrn   _KeFeatureBits:DWORD
         extrn   _KeServiceDescriptorTableShadow:dword
@@ -963,7 +963,7 @@ if DBG
         call    _dbgPrint
         add     esp, 4
 endif
-	stdCall _KeBugCheck2, <0F000FFFFh,0,0,0,0,ebp> ; Never return
+    stdCall _KeBugCheck2, <0F000FFFFh,0,0,0,0,ebp> ; Never return
         ret
 
 _Ki16BitStackException endp
@@ -1443,7 +1443,7 @@ FPOFRAME ?FpoValue, 0
 ;             Irql,
 ;             0,
 ;             0,
-;	      TrapFrame);
+;          TrapFrame);
 ;
 
         stdCall _KeBugCheck2,<IRQL_GT_ZERO_AT_SYSTEM_SERVICE,ebx,eax,0,0,ebp>
@@ -1457,12 +1457,12 @@ FPOFRAME ?FpoValue, 0
 ;             Thread->ApcStateIndex,
 ;             Thread->CombinedApcDisable,
 ;             0,
-;	      TrapFrame);
+;          TrapFrame);
 ;
 
 kss120: movzx   eax,byte ptr [ecx]+ThApcStateIndex ; get APC state index
         mov     edx,[ecx]+ThCombinedApcDisable ; get kernel APC disable
-	stdCall _KeBugCheck2,<APC_INDEX_MISMATCH,ebx,eax,edx,0,ebp>
+    stdCall _KeBugCheck2,<APC_INDEX_MISMATCH,ebx,eax,edx,0,ebp>
 
 endif
         ret
@@ -1584,9 +1584,9 @@ _KiGetTickCount endp
 ;    caller of the user mode callback function.
 ;
 ;    N.B. This service uses a nonstandard calling sequence. The trap
-;	is converted to a standard system call so that the exit sequence
-;	can take advantage of any processor support for fast user mode
-;	return.
+;    is converted to a standard system call so that the exit sequence
+;    can take advantage of any processor support for fast user mode
+;    return.
 ;
 ; Arguments:
 ;
@@ -1616,7 +1616,7 @@ _KiCallbackReturn proc
 
         ENTER_SYSCALL   kcb_a, kcb_t, , , SaveEcx
 
-        mov     ecx, [ebp].TsEcx		; Recover ecx from the trap frame
+        mov     ecx, [ebp].TsEcx        ; Recover ecx from the trap frame
         stdCall _NtCallbackReturn, <ecx,edx,eax> 
         
         ; If it returns, then exit with a failure code as any system call would.
@@ -2378,7 +2378,7 @@ if DBG
 
         xor     eax, eax
         mov     esi, [ebp]+TsEip        ; [esi] = faulting instruction
-	stdCall _KeBugCheck2,<IRQL_NOT_LESS_OR_EQUAL,eax,-1,eax,esi,ebp>
+    stdCall _KeBugCheck2,<IRQL_NOT_LESS_OR_EQUAL,eax,-1,eax,esi,ebp>
 @@:
 endif
 
@@ -3389,9 +3389,9 @@ kt0605:
 
         sti
 
-	; This should be a completely valid user address, but for consistency
-	; it will be probed here.
-	cmp	esi, _MmUserProbeAddress ; Probe captured EIP
+    ; This should be a completely valid user address, but for consistency
+    ; it will be probed here.
+    cmp    esi, _MmUserProbeAddress ; Probe captured EIP
         jb      short kt0606
         mov     esi, _MmUserProbeAddress ; Use bad user EIP to force exception
 kt0606:
@@ -3689,7 +3689,7 @@ endif
         jmp     _KiExceptionExit
 ; A floating point exception was just swallowed (instruction was of no-wait type).
 Kt0709:
-	sti				; Re-enable interrupts
+    sti                ; Re-enable interrupts
         jmp     _KiExceptionExit        ; Already handled
         
 
@@ -3725,16 +3725,16 @@ Kt0715:
 
 Kt0716: stdCall _Ki386CheckDelayedNpxTrap,<ebp,ecx>
         or      al, al
-	jnz	short Kt0709
+    jnz    short Kt0709
 
 Kt0719:
         mov     eax, PCR[PcPrcbData+PbCurrentThread]
 ; Since Ki386CheckDelayedNpxTrap toggled the interrupt state, the NPX state
 ; may no longer be resident.
-	cmp     byte ptr [eax].ThNpxState, NPX_STATE_NOT_LOADED
+    cmp     byte ptr [eax].ThNpxState, NPX_STATE_NOT_LOADED
         mov     ecx, [eax].ThInitialStack ; (ecx) -> top of kernel stack
         lea     ecx, [ecx-NPX_FRAME_LENGTH]
-        je	Kt0726a
+        je    Kt0726a
 
 Kt0720:
 ;
@@ -5194,7 +5194,7 @@ Kt0d03: sti
         mov     PCR[PcExceptionList], esp
 
         mov     esi, [ebp]+TsEip        ; (esi) -> flat address of faulting instruction
-        cmp	esi, _MmUserProbeAddress ; Probe captured EIP
+        cmp    esi, _MmUserProbeAddress ; Probe captured EIP
         jb      short @f
         mov     esi, _MmUserProbeAddress ; Use address of the GAP to force exception
 @@:     mov     ecx, MAX_INSTRUCTION_LENGTH
@@ -5391,10 +5391,10 @@ Kt0d110:
         ; Raise Irql to APC level, before enabling interrupts
         RaiseIrql APC_LEVEL
         sti
-	push    eax                             ; Save OldIrql
+    push    eax                             ; Save OldIrql
 
         stdCall   _VdmDispatchOpcode_try <ebp>
-        or	al,al
+        or    al,al
         jnz     short Kt0d120
 
         stdCall   _Ki386VdmReflectException,<0dh>

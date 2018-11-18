@@ -786,11 +786,11 @@ Return Value:
             FreeCell += HBLOCK_SIZE;
             FreeOffset += HBLOCK_SIZE;
         }
-		//
-		// don't change the hints, we haven't added any free cell !!!
-		//
+        //
+        // don't change the hints, we haven't added any free cell !!!
+        //
         HvReleaseCell(Hive,Cell);
-		return;
+        return;
     }
 
 
@@ -2139,10 +2139,10 @@ Return Value:
     // iterate through the free bins and see how much space is wasted
     //
     FreeSpace = 0;
-	AnchorAddr = &(Hive->Storage[Stable].FreeBins);
-	FreeBin = (PFREE_HBIN)(Hive->Storage[Stable].FreeBins.Flink);
+    AnchorAddr = &(Hive->Storage[Stable].FreeBins);
+    FreeBin = (PFREE_HBIN)(Hive->Storage[Stable].FreeBins.Flink);
 
-	while ( FreeBin != (PFREE_HBIN)AnchorAddr ) {
+    while ( FreeBin != (PFREE_HBIN)AnchorAddr ) {
         FreeBin = CONTAINING_RECORD(FreeBin,
                                     FREE_HBIN,
                                     ListEntry);
@@ -2153,7 +2153,7 @@ Return Value:
         // skip to the next element
         //
         FreeBin = (PFREE_HBIN)(FreeBin->ListEntry.Flink);
-	}
+    }
     CompressLevel = CM_HIVE_COMPRESS_LEVEL * (Hive->Storage[Stable].Length / 100);
     
     if( FreeSpace < CompressLevel ) {

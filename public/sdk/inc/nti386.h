@@ -179,7 +179,7 @@ InterlockedBitTestAndReset (
 }
 #pragma warning(pop)
 
-#endif	/* _MSC_FULL_VER >= 14000101 */
+#endif    /* _MSC_FULL_VER >= 14000101 */
 
 #if !defined(_M_CEE_PURE)
 #pragma warning(push)
@@ -200,7 +200,7 @@ InterlockedBitTestAndComplement (
     };
 }
 #pragma warning(pop)
-#endif	/* _M_CEE_PURE */
+#endif    /* _M_CEE_PURE */
 
 //
 // [pfx_parse]
@@ -252,7 +252,7 @@ __writefsdword (
 #pragma intrinsic(__writefsword)
 #pragma intrinsic(__writefsdword)
 
-#endif	/* _MSC_FULL_VER >= 13012035 */
+#endif    /* _MSC_FULL_VER >= 13012035 */
 
 #ifdef __cplusplus
 }

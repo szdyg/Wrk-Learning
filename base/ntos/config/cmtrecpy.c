@@ -820,7 +820,7 @@ Return Value:
     CmKdPrintEx((DPFLTR_CONFIG_ID,CML_SAVRES,"\tTHive=%p\n",TargetHive));
 
 #if DBG    
-	NameBuffer = ExAllocatePool(PagedPool, REG_MAX_KEY_VALUE_NAME_LENGTH);
+    NameBuffer = ExAllocatePool(PagedPool, REG_MAX_KEY_VALUE_NAME_LENGTH);
     if(!NameBuffer) {
         return HCELL_NIL;
     }
@@ -884,8 +884,8 @@ Return Value:
     ptarkey->Security = HCELL_NIL;
     ptarkey->SubKeyLists[Stable] = HCELL_NIL;
     ptarkey->SubKeyCounts[Stable] = 0;
-	ptarkey->SubKeyCounts[Volatile] = 0;
-	ptarkey->SubKeyLists[Volatile] = HCELL_NIL;
+    ptarkey->SubKeyCounts[Volatile] = 0;
+    ptarkey->SubKeyLists[Volatile] = HCELL_NIL;
     ptarkey->Parent = Parent;
     
     ptarkey->Flags = (psrckey->u.KeyNode.Flags & KEY_COMP_NAME);
@@ -1079,7 +1079,7 @@ DoFinally:
     }
 
     if( ptarkey != NULL ) {
-		ASSERT( newkey != HCELL_NIL );
+        ASSERT( newkey != HCELL_NIL );
         HvReleaseCell(TargetHive, newkey);
     }
     
@@ -1722,7 +1722,7 @@ Return Value:
 #if DBG
     WCHAR                   *NameBuffer = NULL;
     UNICODE_STRING          ValueName;
-	HCELL_INDEX				child;
+    HCELL_INDEX                child;
 #endif //DBG
 
     PSECURITY_DESCRIPTOR    SrcSecurityDescriptor;
@@ -1899,11 +1899,11 @@ Return Value:
     TargetKeyNode->ValueList.List = HCELL_NIL;
     TargetKeyNode->ValueList.Count = 0;
 
-	//
-	// after sync we'll have the values from source
-	//
-	TargetKeyNode->MaxValueNameLen = SourceKeyNode->MaxValueNameLen;
-	TargetKeyNode->MaxValueDataLen = SourceKeyNode->MaxValueDataLen;
+    //
+    // after sync we'll have the values from source
+    //
+    TargetKeyNode->MaxValueNameLen = SourceKeyNode->MaxValueNameLen;
+    TargetKeyNode->MaxValueDataLen = SourceKeyNode->MaxValueDataLen;
 
     if (count == 0) {
 

@@ -1228,8 +1228,8 @@ Return Value:
                     RtlMoveMemory((PVOID)&(FastIndex->List[j]),
                                   (PVOID)&(FastIndex->List[j+1]),
                                   (FastIndex->Count - j) * sizeof(CM_INDEX));
-				    HvMarkCellDirty(Hive,Node->SubKeyLists[Stable],FALSE);
-				    Index->Count--;
+                    HvMarkCellDirty(Hive,Node->SubKeyLists[Stable],FALSE);
+                    Index->Count--;
                     goto DirtyParent;
                 }
             } else {
@@ -1240,8 +1240,8 @@ Return Value:
                     RtlMoveMemory((PVOID)&(Index->List[j]),
                                   (PVOID)&(Index->List[j+1]),
                                   (Index->Count - j) * sizeof(HCELL_INDEX));
-				    HvMarkCellDirty(Hive,Node->SubKeyLists[Stable],FALSE);
-				    Index->Count--;
+                    HvMarkCellDirty(Hive,Node->SubKeyLists[Stable],FALSE);
+                    Index->Count--;
                     goto DirtyParent;
                 }
             }
@@ -1759,7 +1759,7 @@ Return Value:
     }
     Leaf->Count += 1;
     
-	return NewCell;
+    return NewCell;
 }
 
 
@@ -2127,7 +2127,7 @@ Return Value:
     PCM_KEY_INDEX   Leaf;
     HCELL_INDEX     NewLeafCell;
     PCM_KEY_INDEX   NewLeaf;
-	PCM_KEY_FAST_INDEX	FastLeaf;
+    PCM_KEY_FAST_INDEX    FastLeaf;
     ULONG           Size;
     ULONG           freecount;
     USHORT          OldCount;
@@ -2260,19 +2260,19 @@ Return Value:
     //
     //
     if( UseHashIndex(Hive) ) {
-		FastLeaf = (PCM_KEY_FAST_INDEX)Leaf;
-		RtlMoveMemory(
-			(PVOID)&(NewLeaf->List[0]),
-			(PVOID)&(FastLeaf->List[KeepCount]),
-			ElemSize * NewCount
-			);
-	} else {
-		RtlMoveMemory(
-			(PVOID)&(NewLeaf->List[0]),
-			(PVOID)&(Leaf->List[KeepCount]),
-			ElemSize * NewCount
-			);
-	}
+        FastLeaf = (PCM_KEY_FAST_INDEX)Leaf;
+        RtlMoveMemory(
+            (PVOID)&(NewLeaf->List[0]),
+            (PVOID)&(FastLeaf->List[KeepCount]),
+            ElemSize * NewCount
+            );
+    } else {
+        RtlMoveMemory(
+            (PVOID)&(NewLeaf->List[0]),
+            (PVOID)&(Leaf->List[KeepCount]),
+            ElemSize * NewCount
+            );
+    }
 
     ASSERT(KeepCount != 0);
     ASSERT(NewCount  != 0);

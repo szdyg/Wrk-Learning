@@ -1905,7 +1905,7 @@ VdmSegNotPres_ExceptionHandler proc
         mov     esp, [esp+8]            ; (esp)-> ExceptionList
         jmp     reflect
 VdmSegNotPres_ExceptionHandler endp
-	
+    
 
         page   ,132
         subttl "Dispatch UserMode Exception to a Vdm"
@@ -2193,7 +2193,7 @@ PushIntExceptionHandler proc
         mov     esp, [esp+8]            ; (esp)-> ExceptionList
         xor     eax,eax
         jmp     pi90
-PushIntExceptionHandler endp	
+PushIntExceptionHandler endp    
 
         page   ,132
         subttl "Convert CS Segment or selector to linear address"
@@ -2585,7 +2585,7 @@ GethandlerAddress_Exit:
         pop     ebx
         pop     ebp
         ret
-	
+    
 GetHandlerAddress endp
 
 GetHandlerAddress_fault proc
@@ -2925,7 +2925,7 @@ perr1_fault proc
         add     esp, 8                      ; clear stack
         pop     ebp
         jmp     peerr1
-perr1_fault endp	
+perr1_fault endp    
 
 perr_fault proc
         mov     esp, [esp+8]                ; (esp)-> ExceptionList
@@ -2933,7 +2933,7 @@ perr_fault proc
         add     esp, 8                      ; clear stack
         pop     ebp
         jmp     peerr
-perr_fault endp	
+perr_fault endp    
 
 _PAGE   ends
 

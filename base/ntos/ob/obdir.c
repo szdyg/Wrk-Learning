@@ -3231,7 +3231,7 @@ ObSwapObjectNames (
 
     Return Value:
 
-    	NTSTATUS.
+        NTSTATUS.
 
 --*/
 

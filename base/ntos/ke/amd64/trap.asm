@@ -1114,12 +1114,12 @@ KiFE30: mov     edx, EXCEPTION_NPX_ERROR; set unexpected trap number
 
         TRAP_ENTRY KiMcheckAbort
 
-	.pushframe			; mark machine frame
+    .pushframe            ; mark machine frame
 
-	alloc_stack 8			; allocate dummy vector
-	push_reg rbp			; save nonvolatile register
+    alloc_stack 8            ; allocate dummy vector
+    push_reg rbp            ; save nonvolatile register
 
-	GENERATE_INTERRUPT_FRAME <>, <Direct> ; generate interrupt frame
+    GENERATE_INTERRUPT_FRAME <>, <Direct> ; generate interrupt frame
 
         mov     ecx, HIGH_LEVEL         ; set IRQL value
 

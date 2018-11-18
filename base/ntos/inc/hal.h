@@ -1872,7 +1872,7 @@ typedef struct _MCA_DRIVER_INFO {
 // For the information class HalKernelErrorHandler
 typedef enum
 {
-	MceNotification,               // An MCE realated event occured
+    MceNotification,               // An MCE realated event occured
     McaAvailable,                  // An CPE is available for processing
     CmcAvailable,                  // An CMC is available for processing
     CpeAvailable,                  // An CPE is available for processing

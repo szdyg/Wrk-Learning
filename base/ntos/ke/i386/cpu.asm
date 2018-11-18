@@ -51,9 +51,9 @@ PSEUDO_DENORMAL_HIGH  equ     0000h
 ;
 ; Constants for GenuineIntel cpuid.0 vendor string
 ;
-CPUID_0_INTEL_EBX	  equ	  0756e6547h
-CPUID_0_INTEL_EDX	  equ	  049656e69h
-CPUID_0_INTEL_ECX	  equ	  06c65746eh
+CPUID_0_INTEL_EBX      equ      0756e6547h
+CPUID_0_INTEL_EDX      equ      049656e69h
+CPUID_0_INTEL_ECX      equ      06c65746eh
 
 
 .586p

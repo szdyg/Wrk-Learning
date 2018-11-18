@@ -103,7 +103,7 @@ Return Value:
                                 0,
                                 KeyName,
                                 EVENT_TRACE_TYPE_REGKCBDMP);
-	     
+         
                 ExFreePoolWithTag(KeyName, CM_NAME_TAG | PROTECTED_POOL);
             }
             Current = Current->NextHash;

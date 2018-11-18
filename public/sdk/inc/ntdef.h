@@ -954,7 +954,7 @@ _rotr64 (
 #pragma intrinsic(_rotr)
 #pragma intrinsic(_rotr64)
 
-#endif	/* _MSC_VER >= 1300 */
+#endif    /* _MSC_VER >= 1300 */
 
 #ifdef __cplusplus
 }

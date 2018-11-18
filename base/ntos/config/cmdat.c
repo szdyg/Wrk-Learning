@@ -186,7 +186,7 @@ ULONG CmpTypeCount[NUMBER_TYPES] = {
             0,                  // NetworkPeripheral",
             0,                  // SystemMemory",
             0,                  // DockingInformation,
-            0,					// RealModeIrqRoutingTable
+            0,                    // RealModeIrqRoutingTable
             0                   // Undefined"
             };
 
@@ -378,7 +378,7 @@ BOOLEAN CmpShareSystemHives = FALSE;
 //
 // Where are we booting from
 //
-ULONG	CmpBootType;
+ULONG    CmpBootType;
 
 //
 // Self healing hives control switch

@@ -190,7 +190,7 @@ Notes:
             }
             //
             // compute the next index to try: old'n plain hive; go on
-			//
+            //
             Current++;
             if( Current == ChildList->Count ) {
                 //

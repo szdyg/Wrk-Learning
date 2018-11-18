@@ -65,7 +65,7 @@ include ksamd64.inc
 
         mov     ecx, IPI_LEVEL          ; set new IRQL level
 
-	ENTER_INTERRUPT <NoEoi>         ; raise IRQL and enable interrupts
+    ENTER_INTERRUPT <NoEoi>         ; raise IRQL and enable interrupts
 
 ;
 ; Process all interprocessor requests.

@@ -749,11 +749,11 @@ Return Value:
                     ObDereferenceObject(PostBlock->u->AsyncKernel.Event);
                 }
 
-				//
-				// Multiple async kernel notification are not allowed
-				//
-				ASSERT(IsListEmpty(&(PostBlock->CancelPostList)) == TRUE);
-				//
+                //
+                // Multiple async kernel notification are not allowed
+                //
+                ASSERT(IsListEmpty(&(PostBlock->CancelPostList)) == TRUE);
+                //
                 // remove the post block from the thread list, and free it
                 //
                 // Use Cmp variant to protect for multiple deletion of the same object
@@ -903,13 +903,13 @@ Return Value:
     // debug only checks
     CmpCheckPostBlock(PostBlock);
     //
-	// Free the slave post block to avoid "dangling" postblocks
-	//
-	CmpFreeSlavePost(PostBlock);
+    // Free the slave post block to avoid "dangling" postblocks
     //
-	// free this post block
-	// 
-	CmpFreePostBlock(PostBlock);
+    CmpFreeSlavePost(PostBlock);
+    //
+    // free this post block
+    // 
+    CmpFreePostBlock(PostBlock);
 
     return;
 }
@@ -999,10 +999,10 @@ Return Value:
     // Use Cmp variant to protect for multiple deletion of the same object
     CmpRemoveEntryList(&(PostBlock->ThreadList));
 
-	//
-	// Free the slave post block to avoid "dangling" postblocks
-	//
-	CmpFreeSlavePost(PostBlock);
+    //
+    // Free the slave post block to avoid "dangling" postblocks
+    //
+    CmpFreeSlavePost(PostBlock);
     //
     // Free the post block.  Use Ex call because PostBlocks are NOT
     // part of the global registry pool computation, but are instead
@@ -1076,7 +1076,7 @@ Return Value:
     CmKdPrintEx((DPFLTR_CONFIG_ID,CML_FLOW,"CmNotifyRunDown: ethread:%p\n", Thread));
 
     CmpLockRegistry();
-	//
+    //
     // Acquire exclusive access over the postlist(s)
     //
     LOCK_POST_LIST(); 
@@ -1184,10 +1184,10 @@ Return Value:
                 CmpCancelSlavePost(PostBlock,NULL); // we do not want delayed deref
             }
 
-			//
-			// Free the slave Post blocks too
-			//
-			CmpFreeSlavePost(PostBlock);
+            //
+            // Free the slave Post blocks too
+            //
+            CmpFreeSlavePost(PostBlock);
             //
             // Free the post block.  Use Ex call because PostBlocks are NOT
             // part of the global registry pool computation, but are instead
@@ -1639,7 +1639,7 @@ CmpFreeSlavePost(
 
 Routine Description:
 
-	Free the slave post block related to this master post block
+    Free the slave post block related to this master post block
 
 Arguments:
 
@@ -1736,9 +1736,9 @@ CmpCancelSlavePost(
 
 Routine Description:
 
-	Unlink the slave postblock from its notify list and dereferences (or adds to the delayed deref list)
-	the keybody related to this thread. This should disable the slave post block. 
-	It will be cleared later in CmpPostApc.
+    Unlink the slave postblock from its notify list and dereferences (or adds to the delayed deref list)
+    the keybody related to this thread. This should disable the slave post block. 
+    It will be cleared later in CmpPostApc.
 
 Arguments:
 
@@ -1814,8 +1814,8 @@ Return Value:
     // Remove it from notify block's list
     //
     // Use Cmp variant to protect for multiple deletion of the same object
-	// This will disable the notifications that might come on the slave key
-	//
+    // This will disable the notifications that might come on the slave key
+    //
     CmpRemoveEntryList(&(SlavePostBlock->NotifyList));
 
     if( DelayedDeref ) {

@@ -250,8 +250,8 @@ InbvPortGetByte (
 
 VOID
 InbvPortEnableFifo(
-    IN ULONG 	DeviceId,
-    IN BOOLEAN	bEnable
+    IN ULONG     DeviceId,
+    IN BOOLEAN    bEnable
     );
     
 #endif

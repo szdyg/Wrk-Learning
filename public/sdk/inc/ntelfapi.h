@@ -104,16 +104,16 @@ typedef struct _EVENTLOGRECORD {
 #endif
 #pragma warning(disable : 4200)
 typedef struct _EVENTSFORLOGFILE{
-	ULONG			ulSize;
-    WCHAR   		szLogicalLogFile[MAXLOGICALLOGNAMESIZE];        //name of the logical file-security/application/system
-    ULONG			ulNumRecords;
-	EVENTLOGRECORD 	pEventLogRecords[];
+    ULONG            ulSize;
+    WCHAR           szLogicalLogFile[MAXLOGICALLOGNAMESIZE];        //name of the logical file-security/application/system
+    ULONG            ulNumRecords;
+    EVENTLOGRECORD     pEventLogRecords[];
 }EVENTSFORLOGFILE, *PEVENTSFORLOGFILE;
 
 typedef struct _PACKEDEVENTINFO{
     ULONG               ulSize;  //total size of the structure
     ULONG               ulNumEventsForLogFile; //number of EventsForLogFile structure that follow
-    ULONG 				ulOffsets[];           //the offsets from the start of this structure to the EVENTSFORLOGFILE structure
+    ULONG                 ulOffsets[];           //the offsets from the start of this structure to the EVENTSFORLOGFILE structure
 }PACKEDEVENTINFO, *PPACKEDEVENTINFO;
 
 #if _MSC_VER >= 1200
@@ -226,33 +226,33 @@ ElfGetLogInformation (
 NTSTATUS
 NTAPI
 ElfOpenEventLogW (
-    __in_opt	PUNICODE_STRING UNCServerName,
-    __in		PUNICODE_STRING SourceName,
-    __out		PHANDLE         LogHandle
+    __in_opt    PUNICODE_STRING UNCServerName,
+    __in        PUNICODE_STRING SourceName,
+    __out        PHANDLE         LogHandle
     );
 
 NTSTATUS
 NTAPI
 ElfRegisterEventSourceW (
-    __in_opt	PUNICODE_STRING UNCServerName,
-    __in		PUNICODE_STRING SourceName,
-    __out		PHANDLE         LogHandle
+    __in_opt    PUNICODE_STRING UNCServerName,
+    __in        PUNICODE_STRING SourceName,
+    __out        PHANDLE         LogHandle
     );
 
 NTSTATUS
 NTAPI
 ElfOpenBackupEventLogW (
-    __in_opt	PUNICODE_STRING UNCServerName,
-    __in		PUNICODE_STRING FileName,
-    __out		PHANDLE         LogHandle
+    __in_opt    PUNICODE_STRING UNCServerName,
+    __in        PUNICODE_STRING FileName,
+    __out        PHANDLE         LogHandle
     );
 
 NTSTATUS
 NTAPI
 ElfOpenEventLogA (
-    __in_opt	PSTRING UNCServerName,
-    __in		PSTRING SourceName,
-    __in		PHANDLE LogHandle
+    __in_opt    PSTRING UNCServerName,
+    __in        PSTRING SourceName,
+    __in        PHANDLE LogHandle
     );
 
 NTSTATUS

@@ -246,7 +246,7 @@ endif
 
         mov     ecx, CLOCK_LEVEL        ; set new IRQL level
 
-	ENTER_INTERRUPT <NoEoi>         ; raise IRQL and enable interrupts
+    ENTER_INTERRUPT <NoEoi>         ; raise IRQL and enable interrupts
 
 ;
 ; Update runtime.

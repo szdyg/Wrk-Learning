@@ -1119,7 +1119,7 @@ Return Value:
 
             if(IsEnable){
 
-	            SharedUserData->TraceLogging |= ENABLEHEAPTRACE;
+                SharedUserData->TraceLogging |= ENABLEHEAPTRACE;
 
                 //
                 // increment counter. The counter  
@@ -1134,13 +1134,13 @@ Return Value:
                 SharedUserData->TraceLogging &= DISABLEHEAPTRACE;
             }
 
-			WmipLeaveTLCritSection();
-			return STATUS_SUCCESS;
+            WmipLeaveTLCritSection();
+            return STATUS_SUCCESS;
         } else if(IsEqualGUID(&CritSecGuid,Guid)){  
 
             if(IsEnable) {
 
-	            SharedUserData->TraceLogging |= ENABLECRITSECTRACE;
+                SharedUserData->TraceLogging |= ENABLECRITSECTRACE;
 
                 //
                 // increment counter. The counter  
@@ -1154,8 +1154,8 @@ Return Value:
                 SharedUserData->TraceLogging &= DISABLECRITSECTRACE;
             }
 
-			WmipLeaveTLCritSection();
-			return STATUS_SUCCESS;
+            WmipLeaveTLCritSection();
+            return STATUS_SUCCESS;
 
         } else if(IsEqualGUID(&NtdllTraceGuid,Guid)){  
 

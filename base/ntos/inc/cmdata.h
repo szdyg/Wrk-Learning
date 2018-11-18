@@ -276,7 +276,7 @@ typedef enum _SUBKEY_SEARCH_TYPE {
     SearchAndDeref,
     SearchAndCount,
     SearchAndRehash,
-	SearchAndTagNoDelayClose
+    SearchAndTagNoDelayClose
 } SUBKEY_SEARCH_TYPE;
 
 //
@@ -417,7 +417,7 @@ typedef struct _CM_KEY_INDEX {
 
 #define KEY_USER_FLAGS_SHIFT        12      // shift count (to be updated if we change the number of flags)
 
-#define KEY_BREAK_ON_OPEN		    0x8000  // used to determine if we need to break to dbg
+#define KEY_BREAK_ON_OPEN            0x8000  // used to determine if we need to break to dbg
 
 #pragma pack(4)
 typedef struct _CM_KEY_NODE {

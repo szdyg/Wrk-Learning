@@ -2568,8 +2568,8 @@ Arguments:
 
 Return Value:
 
- 	TRUE iff successful, else FALSE.
- 	
+     TRUE iff successful, else FALSE.
+     
 --*/
 
 {

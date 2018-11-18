@@ -2810,7 +2810,7 @@ KiSendThawExecution (
 
 #if IDBG
 
-	//
+    //
         // If the target processor was not frozen, then don't wait
         // for target to unfreeze.
         //

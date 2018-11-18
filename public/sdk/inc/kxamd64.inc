@@ -188,7 +188,7 @@ ReadCr8 macro
 
         mov     rax, cr8                ; read IRQL
 
-	endm
+    endm
 
 ;
 ; Define macro to perform the equivalent of writing cr8.
@@ -200,9 +200,9 @@ ReadCr8 macro
 
 WriteCr8 macro
 
-        mov     cr8, rcx                ; write IRQL			
+        mov     cr8, rcx                ; write IRQL            
 
-	endm
+    endm
 
 ;
 ; Define macro to get current IRQL.
@@ -293,7 +293,7 @@ exit:   WriteCr8                        ; set new IRQL
 
 SetIrql macro
 
-	WriteCr8			; set new IRQL
+    WriteCr8            ; set new IRQL
 
         endm
 
@@ -311,8 +311,8 @@ SetIrql macro
 
 SwapIrql macro
 
-	ReadCr8				; get current IRQL
-	WriteCr8			; set new IRQL
+    ReadCr8                ; get current IRQL
+    WriteCr8            ; set new IRQL
 
         endm
 

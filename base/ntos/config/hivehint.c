@@ -956,8 +956,8 @@ Optimization:
         // don't search again in the vicinity window
         // we already did it once
         //
-		if( ( ((CmHive->GrowOnlyMode == FALSE) || (Type == Volatile)) && 
-			  ((Vicinity == HCELL_NIL) || (HvpCheckViewBoundary(FileOffset,Vicinity&(~HCELL_TYPE_MASK)) == FALSE)) )  || 
+        if( ( ((CmHive->GrowOnlyMode == FALSE) || (Type == Volatile)) && 
+              ((Vicinity == HCELL_NIL) || (HvpCheckViewBoundary(FileOffset,Vicinity&(~HCELL_TYPE_MASK)) == FALSE)) )  || 
             ( (CmHive->GrowOnlyMode == TRUE) && (FileOffset >= CmHive->GrowOffset) )
           ) {
             //

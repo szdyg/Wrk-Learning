@@ -31,9 +31,9 @@ Abstract:
 #define WOW64_TLS_EXCEPTIONADDR             4   // 32-bit exception address (used during exception unwinds)
 #define WOW64_TLS_USERCALLBACKDATA          5   // Used by win32k callbacks
 #define WOW64_TLS_EXTENDED_FLOAT            6   // Used in ia64 to pass in floating point
-#define WOW64_TLS_APCLIST	            7	// List of outstanding usermode APCs
-#define WOW64_TLS_FILESYSREDIR	            8	// Used to enable/disable the filesystem redirector
-#define WOW64_TLS_LASTWOWCALL	            9	// Pointer to the last wow call struct (Used when wowhistory is enabled)
+#define WOW64_TLS_APCLIST                7    // List of outstanding usermode APCs
+#define WOW64_TLS_FILESYSREDIR                8    // Used to enable/disable the filesystem redirector
+#define WOW64_TLS_LASTWOWCALL                9    // Pointer to the last wow call struct (Used when wowhistory is enabled)
 #define WOW64_TLS_WOW64INFO                 10  // Wow64Info address (structure shared between 32-bit and 64-bit code inside Wow64).
 #define WOW64_TLS_INITIAL_TEB32             11  // A pointer to the 32-bit initial TEB
 #define WOW64_TLS_PERFDATA                  12  // A pointer to temporary timestamps used in perf measurement

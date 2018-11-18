@@ -2998,9 +2998,9 @@ MiDetermineUserGlobalPteMask (
 
 #define MI_IS_SYSTEM_CACHE_ADDRESS(VA)                            \
          (((PVOID)(VA) >= (PVOID)MmSystemCacheStart &&            \
-		     (PVOID)(VA) <= (PVOID)MmSystemCacheEnd)  ||          \
+             (PVOID)(VA) <= (PVOID)MmSystemCacheEnd)  ||          \
           ((PVOID)(VA) >= (PVOID)MiSystemCacheStartExtra &&       \
-			  (PVOID)(VA) <= (PVOID)MiSystemCacheEndExtra))
+              (PVOID)(VA) <= (PVOID)MiSystemCacheEndExtra))
 
 //++
 // VOID

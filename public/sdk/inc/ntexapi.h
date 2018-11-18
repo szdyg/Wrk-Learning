@@ -2538,7 +2538,7 @@ NtGetTickCount64 (
     return ((UInt32x32To64(TickCount.LowPart,
                            USER_SHARED_DATA->TickCountMultiplier) >> 24)
             + (UInt32x32To64(TickCount.HighPart,
-               	             USER_SHARED_DATA->TickCountMultiplier) << 8));
+                                USER_SHARED_DATA->TickCountMultiplier) << 8));
 }
 
 FORCEINLINE
@@ -2575,9 +2575,9 @@ NtGetTickCount (
     }
 
     return (ULONG) ((UInt32x32To64(TickCount.LowPart,
-	                           USER_SHARED_DATA->TickCountMultiplier) >> 24)
-        	    + UInt32x32To64((TickCount.HighPart << 8) & 0xffffffff,
-              		            USER_SHARED_DATA->TickCountMultiplier));
+                               USER_SHARED_DATA->TickCountMultiplier) >> 24)
+                + UInt32x32To64((TickCount.HighPart << 8) & 0xffffffff,
+                                  USER_SHARED_DATA->TickCountMultiplier));
 
 #endif
 

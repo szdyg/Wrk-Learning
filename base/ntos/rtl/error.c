@@ -186,55 +186,55 @@ Return Value:
 NTSTATUS
 NTAPI
 RtlGetLastNtStatus(
-	VOID
-	)
+    VOID
+    )
 {
-	return NtCurrentTeb()->LastStatusValue;
+    return NtCurrentTeb()->LastStatusValue;
 }
 
 LONG
 NTAPI
 RtlGetLastWin32Error(
-	VOID
-	)
+    VOID
+    )
 {
-	return NtCurrentTeb()->LastErrorValue;
+    return NtCurrentTeb()->LastErrorValue;
 }
 
 VOID
 NTAPI
 RtlSetLastWin32ErrorAndNtStatusFromNtStatus(
-	NTSTATUS Status
-	)
+    NTSTATUS Status
+    )
 {
-	//
-	// RtlNtStatusToDosError stores into NtCurrentTeb()->LastStatusValue.
-	//
-	RtlSetLastWin32Error(RtlNtStatusToDosError(Status));
+    //
+    // RtlNtStatusToDosError stores into NtCurrentTeb()->LastStatusValue.
+    //
+    RtlSetLastWin32Error(RtlNtStatusToDosError(Status));
 }
 
 VOID
 NTAPI
 RtlSetLastWin32Error(
-	LONG Win32Error
-	)
+    LONG Win32Error
+    )
 {
 //
 // Arguably this should clear or reset the last nt status, but it does not
 // touch it.
 //
-	NtCurrentTeb()->LastErrorValue = Win32Error;
+    NtCurrentTeb()->LastErrorValue = Win32Error;
 }
 
 VOID
 NTAPI
 RtlRestoreLastWin32Error(
-	LONG Win32Error
-	)
+    LONG Win32Error
+    )
 {
 #if DBG
-	if ((LONG)NtCurrentTeb()->LastErrorValue != Win32Error)
+    if ((LONG)NtCurrentTeb()->LastErrorValue != Win32Error)
 #endif
-		NtCurrentTeb()->LastErrorValue = Win32Error;
+        NtCurrentTeb()->LastErrorValue = Win32Error;
 }
 

@@ -990,9 +990,9 @@ Return Value:
 
 typedef enum
 {
-	SYSID_UNKNOWN_TYPE,
-	SYSID_UUID_TYPE,
-	SYSID_1394_TYPE
+    SYSID_UNKNOWN_TYPE,
+    SYSID_UUID_TYPE,
+    SYSID_1394_TYPE
 } SYSID_ENTRY_TYPE, *PSYSID_ENTRY_TYPE;
 
 NTSTATUS WmipParseSysIdTable(
@@ -1043,7 +1043,7 @@ Return Value:
     ULONG Length;
     ULONG x1394Count, UuidCount;
     ULONG BytesLeft;
-	SYSID_ENTRY_TYPE SysidType;
+    SYSID_ENTRY_TYPE SysidType;
 
     PAGED_CODE();
 
@@ -1068,37 +1068,37 @@ Return Value:
             {
 
                 Length = SysId->Length;
-				
-				//
-				// Determine what kind of sysid we have
-				//
-				if ((RtlCompareMemory(&SysId->Type,
-									  SYSID_TYPE_UUID, 6) == 6) &&
-					(Length == sizeof(SYSID_UUID_ENTRY)))
-				{
-					SysidType = SYSID_UUID_TYPE;
-				} else if ((RtlCompareMemory(&SysId->Type,
-											SYSID_TYPE_1394, 6) == 6) &&
-						   (Length == sizeof(SYSID_1394_ENTRY))) {
+                
+                //
+                // Determine what kind of sysid we have
+                //
+                if ((RtlCompareMemory(&SysId->Type,
+                                      SYSID_TYPE_UUID, 6) == 6) &&
+                    (Length == sizeof(SYSID_UUID_ENTRY)))
+                {
+                    SysidType = SYSID_UUID_TYPE;
+                } else if ((RtlCompareMemory(&SysId->Type,
+                                            SYSID_TYPE_1394, 6) == 6) &&
+                           (Length == sizeof(SYSID_1394_ENTRY))) {
 
-					SysidType = SYSID_1394_TYPE;
-				} else {
-					//
-					// unknown type SYSID
-					//
-					WmipDebugPrintEx((DPFLTR_WMICORE_ID, DPFLTR_INFO_LEVEL,"WMI: Unknown SYSID type %c%c%c%c%c%c found at %p\n",
-								 SysId->Type[0],
-								 SysId->Type[1],
-								 SysId->Type[2],
-								 SysId->Type[3],
-								 SysId->Type[4],
-								 SysId->Type[5],
-								 SysId
-							 ));
-					Status = STATUS_UNSUCCESSFUL;
-					break;
-				}
-				
+                    SysidType = SYSID_1394_TYPE;
+                } else {
+                    //
+                    // unknown type SYSID
+                    //
+                    WmipDebugPrintEx((DPFLTR_WMICORE_ID, DPFLTR_INFO_LEVEL,"WMI: Unknown SYSID type %c%c%c%c%c%c found at %p\n",
+                                 SysId->Type[0],
+                                 SysId->Type[1],
+                                 SysId->Type[2],
+                                 SysId->Type[3],
+                                 SysId->Type[4],
+                                 SysId->Type[5],
+                                 SysId
+                             ));
+                    Status = STATUS_UNSUCCESSFUL;
+                    break;
+                }
+                
                 //
                 // Validate checksum for this table entry
 
@@ -1157,10 +1157,10 @@ Return Value:
                             break;
                         }
                     } else {
-						WmipAssert(FALSE);
-						Status = STATUS_UNSUCCESSFUL;
-						break;
-					}
+                        WmipAssert(FALSE);
+                        Status = STATUS_UNSUCCESSFUL;
+                        break;
+                    }
                     
                     //
                     // Advance to next sysid in table

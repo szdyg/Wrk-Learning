@@ -216,9 +216,9 @@ Return Value:
     //
     if (! CmpMarkKeyDirty(Hive, Cell
 #if DBG
-		,TRUE
+        ,TRUE
 #endif //DBG
-		)) {
+        )) {
         return STATUS_NO_LOG_SPACE;
     }
 
@@ -348,8 +348,8 @@ CmpMarkKeyDirty(
     PHHIVE Hive,
     HCELL_INDEX Cell
 #if DBG
-	, 
-	BOOLEAN CheckNoSubkeys
+    , 
+    BOOLEAN CheckNoSubkeys
 #endif
     )
 /*++
@@ -397,10 +397,10 @@ Return Value:
     }
 
 #if DBG
-	if(CheckNoSubkeys == TRUE) {
-		ASSERT(ptarget->u.KeyNode.SubKeyCounts[Stable] == 0);
-		ASSERT(ptarget->u.KeyNode.SubKeyCounts[Volatile] == 0);
-	}
+    if(CheckNoSubkeys == TRUE) {
+        ASSERT(ptarget->u.KeyNode.SubKeyCounts[Stable] == 0);
+        ASSERT(ptarget->u.KeyNode.SubKeyCounts[Volatile] == 0);
+    }
 #endif //DBG
 
     if (ptarget->u.KeyNode.Flags & KEY_HIVE_EXIT) {
@@ -470,8 +470,8 @@ Return Value:
     // Mark the value entries and their data
     //
     if ( !(ptarget->u.KeyNode.Flags & KEY_PREDEF_HANDLE) && 
-		  (ptarget->u.KeyNode.ValueList.Count > 0) 
-	   ) {
+          (ptarget->u.KeyNode.ValueList.Count > 0) 
+       ) {
 
         // target list
         if (! HvMarkCellDirty(Hive, ptarget->u.KeyNode.ValueList.List, FALSE)) {

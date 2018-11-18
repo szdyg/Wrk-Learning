@@ -30,8 +30,8 @@ Abstract:
 #endif
 
 typedef struct _CM_ALLOC_PAGE {
-    ULONG       FreeCount;		// number of free kcbs
-    ULONG       Reserved;		// alignment
+    ULONG       FreeCount;        // number of free kcbs
+    ULONG       Reserved;        // alignment
     PVOID       AllocPage;      // crud allocations - this member is NOT USED
 } CM_ALLOC_PAGE, *PCM_ALLOC_PAGE;
 
@@ -42,9 +42,9 @@ typedef struct _CM_ALLOC_PAGE {
 #define KCB_TO_ALLOC_PAGE( kcb ) ((PCM_ALLOC_PAGE)KCB_TO_PAGE_ADDRESS(kcb))
 
 LIST_ENTRY          CmpFreeKCBListHead;   // list of free kcbs
-BOOLEAN				CmpAllocInited = FALSE;
+BOOLEAN                CmpAllocInited = FALSE;
 
-KGUARDED_MUTEX			CmpAllocBucketLock;                // used to protect the bucket
+KGUARDED_MUTEX            CmpAllocBucketLock;                // used to protect the bucket
 
 #define LOCK_ALLOC_BUCKET() KeAcquireGuardedMutex(&CmpAllocBucketLock)
 #define UNLOCK_ALLOC_BUCKET() KeReleaseGuardedMutex(&CmpAllocBucketLock)
@@ -77,11 +77,11 @@ Return Value:
     InitializeListHead(&(CmpFreeKCBListHead));   
 
     //
-	// init the bucket lock
-	//
-	KeInitializeGuardedMutex(&CmpAllocBucketLock);
-	
-	CmpAllocInited = TRUE;
+    // init the bucket lock
+    //
+    KeInitializeGuardedMutex(&CmpAllocBucketLock);
+    
+    CmpAllocInited = TRUE;
 }
 
 VOID
@@ -134,7 +134,7 @@ Return Value:
 {
     USHORT                  j;
     PCM_KEY_CONTROL_BLOCK   kcb = NULL;
-	PCM_ALLOC_PAGE			AllocPage;
+    PCM_ALLOC_PAGE            AllocPage;
 
     PAGED_CODE();
     
@@ -145,7 +145,7 @@ Return Value:
         goto AllocFromPool;
     }
     
-	LOCK_ALLOC_BUCKET();
+    LOCK_ALLOC_BUCKET();
 
 SearchFreeKcb:
     //
@@ -160,18 +160,18 @@ SearchFreeKcb:
                                 CM_KEY_CONTROL_BLOCK,
                                 FreeListEntry);
 
-		AllocPage = (PCM_ALLOC_PAGE)KCB_TO_ALLOC_PAGE( kcb );
+        AllocPage = (PCM_ALLOC_PAGE)KCB_TO_ALLOC_PAGE( kcb );
 
         ASSERT( AllocPage->FreeCount != 0 );
 
         AllocPage->FreeCount--;
         
-		//
-		// set when page was allocated
-		//
-		ASSERT( kcb->PrivateAlloc == 1);
+        //
+        // set when page was allocated
+        //
+        ASSERT( kcb->PrivateAlloc == 1);
 
-		UNLOCK_ALLOC_BUCKET();
+        UNLOCK_ALLOC_BUCKET();
         return kcb;
     }
 
@@ -187,13 +187,13 @@ SearchFreeKcb:
         //
         // we might be low on pool; maybe small pool chunks will work
         //
-		UNLOCK_ALLOC_BUCKET();
+        UNLOCK_ALLOC_BUCKET();
         goto AllocFromPool;
     }
 
-	//
-	// set up the page
-	//
+    //
+    // set up the page
+    //
     AllocPage->FreeCount = CM_KCBS_PER_PAGE;
 
     //
@@ -202,10 +202,10 @@ SearchFreeKcb:
     for(j=0;j<CM_KCBS_PER_PAGE;j++) {
         kcb = (PCM_KEY_CONTROL_BLOCK)((PUCHAR)AllocPage + FIELD_OFFSET(CM_ALLOC_PAGE,AllocPage) + j*CM_KCB_ENTRY_SIZE);
 
-		//
-		// set it here; only once
-		//
-		kcb->PrivateAlloc = 1;
+        //
+        // set it here; only once
+        //
+        kcb->PrivateAlloc = 1;
         kcb->DelayCloseEntry = NULL;
         
         InsertTailList(
@@ -256,8 +256,8 @@ Return Value:
 
 --*/
 {
-    USHORT			j;
-	PCM_ALLOC_PAGE	AllocPage;
+    USHORT            j;
+    PCM_ALLOC_PAGE    AllocPage;
 
     PAGED_CODE();
 
@@ -280,7 +280,7 @@ Return Value:
         return;
     }
 
-	LOCK_ALLOC_BUCKET();
+    LOCK_ALLOC_BUCKET();
 
     ASSERT_HASH_ENTRY_LOCKED_EXCLUSIVE(kcb->ConvKey);
     LogKCBFree(kcb);
@@ -293,17 +293,17 @@ Return Value:
         &(kcb->FreeListEntry)
         );
 
-	//
-	// get the page
-	//
-	AllocPage = (PCM_ALLOC_PAGE)KCB_TO_ALLOC_PAGE( kcb );
+    //
+    // get the page
+    //
+    AllocPage = (PCM_ALLOC_PAGE)KCB_TO_ALLOC_PAGE( kcb );
 
     //
-	// not all are free
-	//
-	ASSERT( AllocPage->FreeCount != CM_KCBS_PER_PAGE);
+    // not all are free
+    //
+    ASSERT( AllocPage->FreeCount != CM_KCBS_PER_PAGE);
 
-	AllocPage->FreeCount++;
+    AllocPage->FreeCount++;
 
     if( AllocPage->FreeCount == CM_KCBS_PER_PAGE ) {
         //
@@ -320,7 +320,7 @@ Return Value:
         ExFreePoolWithTag(AllocPage, CM_ALLOCATE_TAG|PROTECTED_POOL);
     }
 
-	UNLOCK_ALLOC_BUCKET();
+    UNLOCK_ALLOC_BUCKET();
 
 }
 
@@ -330,7 +330,7 @@ Return Value:
 
 LIST_ENTRY          CmpFreeDelayItemsListHead;   // list of free delay items
 
-KGUARDED_MUTEX			CmpDelayAllocBucketLock;                // used to protect the bucket
+KGUARDED_MUTEX            CmpDelayAllocBucketLock;                // used to protect the bucket
 
 #define LOCK_DELAY_ALLOC_BUCKET() KeAcquireGuardedMutex(&CmpDelayAllocBucketLock)
 #define UNLOCK_DELAY_ALLOC_BUCKET() KeReleaseGuardedMutex(&CmpDelayAllocBucketLock)
@@ -365,9 +365,9 @@ Return Value:
     InitializeListHead(&(CmpFreeDelayItemsListHead));   
 
     //
-	// init the bucket lock
-	//
-	KeInitializeGuardedMutex(&CmpDelayAllocBucketLock);
+    // init the bucket lock
+    //
+    KeInitializeGuardedMutex(&CmpDelayAllocBucketLock);
 }
 
 VOID
@@ -413,12 +413,12 @@ Return Value:
 {
     USHORT                  j;
     PCM_DELAY_ALLOC         DelayItem = NULL;
-	PCM_ALLOC_PAGE			AllocPage;
+    PCM_ALLOC_PAGE            AllocPage;
 
     CM_PAGED_CODE();
     
     
-	LOCK_DELAY_ALLOC_BUCKET();
+    LOCK_DELAY_ALLOC_BUCKET();
 
 SearchFreeItem:
     //
@@ -441,7 +441,7 @@ SearchFreeItem:
 
         AllocPage->FreeCount--;
         
-		UNLOCK_DELAY_ALLOC_BUCKET();
+        UNLOCK_DELAY_ALLOC_BUCKET();
         return DelayItem;
     }
 
@@ -457,13 +457,13 @@ SearchFreeItem:
         //
         // bad luck
         //
-		UNLOCK_DELAY_ALLOC_BUCKET();
+        UNLOCK_DELAY_ALLOC_BUCKET();
         return NULL;
     }
 
-	//
-	// set up the page
-	//
+    //
+    // set up the page
+    //
     AllocPage->FreeCount = CM_DELAYS_PER_PAGE;
 
     //
@@ -507,13 +507,13 @@ Return Value:
 
 --*/
 {
-    USHORT			j;
-	PCM_ALLOC_PAGE	AllocPage;
+    USHORT            j;
+    PCM_ALLOC_PAGE    AllocPage;
     PCM_DELAY_ALLOC DelayItem = (PCM_DELAY_ALLOC)Item;
 
     CM_PAGED_CODE();
 
-	LOCK_DELAY_ALLOC_BUCKET();
+    LOCK_DELAY_ALLOC_BUCKET();
 
     //
     // add kcb to freelist
@@ -523,17 +523,17 @@ Return Value:
         &(DelayItem->ListEntry)
         );
 
-	//
-	// get the page
-	//
+    //
+    // get the page
+    //
     AllocPage = (PCM_ALLOC_PAGE)DELAY_ALLOC_TO_ALLOC_PAGE( DelayItem );
 
     //
-	// not all are free
-	//
-	ASSERT( AllocPage->FreeCount != CM_DELAYS_PER_PAGE);
+    // not all are free
+    //
+    ASSERT( AllocPage->FreeCount != CM_DELAYS_PER_PAGE);
 
-	AllocPage->FreeCount++;
+    AllocPage->FreeCount++;
 
     if( AllocPage->FreeCount == CM_DELAYS_PER_PAGE ) {
         //
@@ -549,6 +549,6 @@ Return Value:
         ExFreePoolWithTag(AllocPage, CM_ALLOCATE_TAG|PROTECTED_POOL);
     }
 
-	UNLOCK_DELAY_ALLOC_BUCKET();
+    UNLOCK_DELAY_ALLOC_BUCKET();
 }
 

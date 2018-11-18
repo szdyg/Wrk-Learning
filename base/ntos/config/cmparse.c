@@ -1307,7 +1307,7 @@ Return Value:
     }
     NextName->MaximumLength = NextName->Length;
 
-	//
+    //
     // Set last, return success
     //
     *Last = (RemainingName->Length == 0) ? TRUE : FALSE;
@@ -2313,7 +2313,7 @@ Again:
         goto Exit;
     }
 
-	if (Length > ObjectName->MaximumLength) {
+    if (Length > ObjectName->MaximumLength) {
         UNICODE_STRING NewObjectName;
 
         //
@@ -3208,29 +3208,29 @@ Return Value:
 
     CmpLockHiveListShared();
     //
-	// walk the TrustClassEntry list of SrcHive, to see if we can find DstSrc
-	//
-	AnchorAddr = &(DestHive->TrustClassEntry);
-	TmpHive = (PCMHIVE)(DestHive->TrustClassEntry.Flink);
+    // walk the TrustClassEntry list of SrcHive, to see if we can find DstSrc
+    //
+    AnchorAddr = &(DestHive->TrustClassEntry);
+    TmpHive = (PCMHIVE)(DestHive->TrustClassEntry.Flink);
 
-	while ( TmpHive != (PCMHIVE)AnchorAddr ) {
-		TmpHive = CONTAINING_RECORD(
-						TmpHive,
-						CMHIVE,
-						TrustClassEntry
-						);
-		if( TmpHive == OrigHive ) {
-			//
-			// found it ==> same class of trust
-			//
+    while ( TmpHive != (PCMHIVE)AnchorAddr ) {
+        TmpHive = CONTAINING_RECORD(
+                        TmpHive,
+                        CMHIVE,
+                        TrustClassEntry
+                        );
+        if( TmpHive == OrigHive ) {
+            //
+            // found it ==> same class of trust
+            //
             CmpUnlockHiveList();
             return TRUE;
-		}
+        }
         //
         // skip to the next element
         //
         TmpHive = (PCMHIVE)(TmpHive->TrustClassEntry.Flink);
-	}
+    }
 
     CmpUnlockHiveList();
 

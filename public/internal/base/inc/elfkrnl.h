@@ -19,8 +19,8 @@ Abstract:
 #ifndef _ELFKRNL_
 #define _ELFKRNL_
 
-#define     ELF_PORT_NAME	    "\\ErrorLogPort"
-#define     ELF_PORT_NAME_U	    L"\\ErrorLogPort"
+#define     ELF_PORT_NAME        "\\ErrorLogPort"
+#define     ELF_PORT_NAME_U        L"\\ErrorLogPort"
 
 //
 //  Type discriminator

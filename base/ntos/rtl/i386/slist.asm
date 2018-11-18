@@ -92,7 +92,7 @@ cPublicFpo 0,1
 
 Efls10: or      eax, eax                ; check if list is empty
         jz      short Efls20            ; if z set, list is empty
-        mov     ecx, edx   		; copy sequence number
+        mov     ecx, edx           ; copy sequence number
         mov     cx, bx                  ; clear depth leaving sequence number
 
 .586
@@ -282,7 +282,7 @@ fstENDP RtlpInterlockedPopEntrySList
 ;
 
 cPublicFastCall ExInterlockedPushEntrySList, 3
-       pop	[esp]			; Drop the lock argument
+       pop    [esp]            ; Drop the lock argument
 fstENDP ExInterlockedPushEntrySList
 
 cPublicFastCall InterlockedPushEntrySList, 2
@@ -378,7 +378,7 @@ Epshl10:
         mov     ecx, [esp+4*3]          ; Fetch address of list tail
         mov     [ecx], eax              ; Store new forward pointer in tail entry
         lea     ecx, [edx+010000H]      ; increment sequence number
-        add     ecx, [esp+4*4]		; Add in new count to create correct depth
+        add     ecx, [esp+4*4]        ; Add in new count to create correct depth
 .586
 ifndef NT_UP
 

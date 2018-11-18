@@ -273,12 +273,12 @@ typedef ULONG64 TRACEHANDLE, *PTRACEHANDLE;
 // Note that the order or value of these flags should NOT be changed as they are processed
 // in this order.
 //
-#define TRACE_MESSAGE_SEQUENCE		1           // Message should include a sequence number
-#define TRACE_MESSAGE_GUID			2           // Message includes a GUID
+#define TRACE_MESSAGE_SEQUENCE        1           // Message should include a sequence number
+#define TRACE_MESSAGE_GUID            2           // Message includes a GUID
 #define TRACE_MESSAGE_COMPONENTID   4           // Message has no GUID, Component ID instead
-#define	TRACE_MESSAGE_TIMESTAMP		8           // Message includes a timestamp
+#define    TRACE_MESSAGE_TIMESTAMP        8           // Message includes a timestamp
 #define TRACE_MESSAGE_PERFORMANCE_TIMESTAMP 16  // *Obsolete* Clock type is controlled by the logger
-#define	TRACE_MESSAGE_SYSTEMINFO	32          // Message includes system information TID,PID
+#define    TRACE_MESSAGE_SYSTEMINFO    32          // Message includes system information TID,PID
 #define TRACE_MESSAGE_FLAG_MASK     0xFFFF      // Only the lower 16 bits of flags are placed in the message
                                                 // those above 16 bits are reserved for local processing
 #define TRACE_MESSAGE_MAXIMUM_SIZE  8*1024      // the maximum size allowed for a single trace message

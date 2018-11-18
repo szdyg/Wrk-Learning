@@ -30,9 +30,9 @@ extern ULONG PsMaximumWorkingSet;
 
 #define NTDLL_PATH_NAME L"\\SystemRoot\\System32\\ntdll.dll"
 const UNICODE_STRING PsNtDllPathName = {
-	sizeof(NTDLL_PATH_NAME) - sizeof(UNICODE_NULL),
-	sizeof(NTDLL_PATH_NAME),
-	NTDLL_PATH_NAME
+    sizeof(NTDLL_PATH_NAME) - sizeof(UNICODE_NULL),
+    sizeof(NTDLL_PATH_NAME),
+    NTDLL_PATH_NAME
 };
 
 ULONG PsPrioritySeparation; // nonpaged

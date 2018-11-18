@@ -227,8 +227,8 @@ HvSyncHive(
 NTSTATUS
 HvWriteHive(
     PHHIVE  Hive,
-	BOOLEAN	DontGrow,
-	BOOLEAN	WriteThroughCache,
+    BOOLEAN    DontGrow,
+    BOOLEAN    WriteThroughCache,
     BOOLEAN CrashSafe
     );
 

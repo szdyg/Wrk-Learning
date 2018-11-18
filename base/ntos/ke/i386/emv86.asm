@@ -747,9 +747,9 @@ pof15:
         mov     [ebp].TsEFlags, ebx
 pof20:  
 if DBG
-	test	ebx, EFLAGS_V86_MASK	; Subset of value written to EFLAGs
-	jnz	short @f
-	int	3			; Should be set along this path!
+    test    ebx, EFLAGS_V86_MASK    ; Subset of value written to EFLAGs
+    jnz    short @f
+    int    3            ; Should be set along this path!
 @@:
 endif
 ;
@@ -759,7 +759,7 @@ endif
 .errnz (EFLAGS_V86_MASK AND 0FF00FFFFh)
         test    byte ptr [esp].TsEFlags+2,EFLAGS_V86_MASK/010000h
         lea     esp, [esp+4]
-        jnz	@f
+        jnz    @f
         stdCall _Ki386AdjustEsp0, <ebp>
 @@:
         pop     eax

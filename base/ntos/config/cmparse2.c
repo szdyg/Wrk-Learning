@@ -403,7 +403,7 @@ Return Value:
                 HvReleaseCell(Hive,KeyCell);
 
             }
-		}
+        }
     }
 Exit:
     HvReleaseFreeCellRefArray(&CellRef);
@@ -507,8 +507,8 @@ Return Value:
                         HCELL_NIL
                         );
         if (*KeyCell == HCELL_NIL) {
-			Status = STATUS_INSUFFICIENT_RESOURCES;
-			leave;
+            Status = STATUS_INSUFFICIENT_RESOURCES;
+            leave;
         }
         alloc = 1;
         KeyNode = (PCM_KEY_NODE)HvGetCell(Hive, *KeyCell);
@@ -519,7 +519,7 @@ Return Value:
             // (i.e. it must be PINNED into memory at this point)
             //
             ASSERT( FALSE );
-			Status = STATUS_INSUFFICIENT_RESOURCES;
+            Status = STATUS_INSUFFICIENT_RESOURCES;
             leave;
         }
         // release the cell right here as the view is pinned
@@ -532,7 +532,7 @@ Return Value:
             ClassCell = HvAllocateCell(Hive, Context->Class.Length, StorageType,*KeyCell);
             if (ClassCell == HCELL_NIL) {
                 Status = STATUS_INSUFFICIENT_RESOURCES;
-				leave;
+                leave;
             }
         }
         alloc = 2;
@@ -577,7 +577,7 @@ Return Value:
                     // (i.e. it must be PINNED into memory at this point)
                     //
                     ASSERT( FALSE );
-			        Status = STATUS_INSUFFICIENT_RESOURCES;
+                    Status = STATUS_INSUFFICIENT_RESOURCES;
                     ObDereferenceObject(*Object);
                     leave;
                 }

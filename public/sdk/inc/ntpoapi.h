@@ -636,8 +636,8 @@ typedef struct {
 //
 // valid flags for SYSTEM_POWER_STATE_DISABLE_REASON.PowerReasonCode
 //
-#define	SPSD_REASON_NONE                        0x00000000
-#define	SPSD_REASON_NOBIOSSUPPORT               0x00000001
+#define    SPSD_REASON_NONE                        0x00000000
+#define    SPSD_REASON_NOBIOSSUPPORT               0x00000001
 #define SPSD_REASON_BIOSINCOMPATIBLE            0x00000002
 #define SPSD_REASON_NOOSPM                      0x00000003
 #define SPSD_REASON_LEGACYDRIVER                0x00000004
@@ -652,10 +652,10 @@ typedef struct {
 
 
 typedef struct _SYSTEM_POWER_STATE_DISABLE_REASON {
-	BOOLEAN AffectedState[POWER_STATE_HANDLER_TYPE_MAX];
-	ULONG PowerReasonCode;
-	ULONG PowerReasonLength;
-	//UCHAR PowerReasonInfo[ANYSIZE_ARRAY];
+    BOOLEAN AffectedState[POWER_STATE_HANDLER_TYPE_MAX];
+    ULONG PowerReasonCode;
+    ULONG PowerReasonLength;
+    //UCHAR PowerReasonInfo[ANYSIZE_ARRAY];
 } SYSTEM_POWER_STATE_DISABLE_REASON, *PSYSTEM_POWER_STATE_DISABLE_REASON;
 
 //

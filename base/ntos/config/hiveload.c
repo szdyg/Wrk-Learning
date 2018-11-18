@@ -645,7 +645,7 @@ Return Value:
 
     //
     // Allocate a IO_BUFFER_SIZE for I/O operations from paged pool. 
-	// It will be freed at the end of the function.
+    // It will be freed at the end of the function.
     //
     IOBuffer = (PUCHAR)ExAllocatePool(PagedPool, IO_BUFFER_SIZE);
     if (IOBuffer == NULL) {

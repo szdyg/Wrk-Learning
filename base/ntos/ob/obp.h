@@ -998,7 +998,7 @@ Return Value:
     return TRUE;
 }
 
-#define OBP_NAME_LOCKED	            ((LONG)0x80000000)
+#define OBP_NAME_LOCKED                ((LONG)0x80000000)
 #define OBP_NAME_KERNEL_PROTECTED   ((LONG)0x40000000)
 
 FORCEINLINE

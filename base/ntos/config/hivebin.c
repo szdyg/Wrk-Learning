@@ -93,7 +93,7 @@ Return Value:
     PLIST_ENTRY     Entry;
     PFREE_HBIN      FreeBin = NULL;
     ULONG           TotalDiscardedSize;
-    PCMHIVE			CmHive;
+    PCMHIVE            CmHive;
 
     CM_PAGED_CODE();
 

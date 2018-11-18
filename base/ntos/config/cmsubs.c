@@ -161,59 +161,59 @@ CmpDumpOneKeyBody(
         PKEY_OPEN_SUBKEYS_INFORMATION   SubkeysInfo = (PKEY_OPEN_SUBKEYS_INFORMATION)(QueryContext->Buffer);
         ULONG                           SizeNeeded;
         
-		//
-		// we need to ignore the one created by us inside NtQueryOpenSubKeysEx
-		//
-		if( QueryContext->KeyBodyToIgnore != KeyBody ) {
-			//
-			// update RequiredSize; we do this regardless if we have room or not in the buffer
-			// reserve for one entry in the array and the unicode name buffer
-			//
-			SizeNeeded = (sizeof(KEY_PID_ARRAY) + (ULONG)(Name->Length));
-			QueryContext->RequiredSize += SizeNeeded;
+        //
+        // we need to ignore the one created by us inside NtQueryOpenSubKeysEx
+        //
+        if( QueryContext->KeyBodyToIgnore != KeyBody ) {
+            //
+            // update RequiredSize; we do this regardless if we have room or not in the buffer
+            // reserve for one entry in the array and the unicode name buffer
+            //
+            SizeNeeded = (sizeof(KEY_PID_ARRAY) + (ULONG)(Name->Length));
+            QueryContext->RequiredSize += SizeNeeded;
         
-			//
-			// if we have encountered an error (overflow, or else) at some previous iteration, no point going on
-			//
-			if( NT_SUCCESS(QueryContext->StatusCode) ) {
-				//
-				// see if we have enough room for current entry.
-				//
-				if( (QueryContext->UsedLength + SizeNeeded) > QueryContext->BufferLength ) {
-					//
-					// buffer not big enough; 
-					//
-					QueryContext->StatusCode = STATUS_BUFFER_OVERFLOW;
-				} else {
-					//
-					// we have established we have enough room; create/add a new entry to the key array
-					// and build up unicode name buffer. copy key name to it.
-					// array elements are at the beginning of the user buffer, while name buffers start at 
-					// the end and continue backwards, as long as there is enough room.
-					//
-					try {
-						//
-						// protect user mode memory
-						//
-						SubkeysInfo->KeyArray[SubkeysInfo->Count].PID = KeyBody->ProcessID;
-						SubkeysInfo->KeyArray[SubkeysInfo->Count].KeyName.Length = Name->Length;
-						SubkeysInfo->KeyArray[SubkeysInfo->Count].KeyName.MaximumLength = Name->Length; 
-						SubkeysInfo->KeyArray[SubkeysInfo->Count].KeyName.Buffer = (PWSTR)((PUCHAR)QueryContext->CurrentNameBuffer - Name->Length);
-						RtlCopyMemory(  SubkeysInfo->KeyArray[SubkeysInfo->Count].KeyName.Buffer,
-										Name->Buffer,
-										Name->Length);
-						//
-						// update array count and work vars inside the querycontext
-						//
-						SubkeysInfo->Count++;
-						QueryContext->CurrentNameBuffer = (PUCHAR)QueryContext->CurrentNameBuffer - Name->Length;
-						QueryContext->UsedLength += SizeNeeded;
-					} except (EXCEPTION_EXECUTE_HANDLER) {
-						QueryContext->StatusCode = GetExceptionCode();
-					}
-				}
-			}
-		}
+            //
+            // if we have encountered an error (overflow, or else) at some previous iteration, no point going on
+            //
+            if( NT_SUCCESS(QueryContext->StatusCode) ) {
+                //
+                // see if we have enough room for current entry.
+                //
+                if( (QueryContext->UsedLength + SizeNeeded) > QueryContext->BufferLength ) {
+                    //
+                    // buffer not big enough; 
+                    //
+                    QueryContext->StatusCode = STATUS_BUFFER_OVERFLOW;
+                } else {
+                    //
+                    // we have established we have enough room; create/add a new entry to the key array
+                    // and build up unicode name buffer. copy key name to it.
+                    // array elements are at the beginning of the user buffer, while name buffers start at 
+                    // the end and continue backwards, as long as there is enough room.
+                    //
+                    try {
+                        //
+                        // protect user mode memory
+                        //
+                        SubkeysInfo->KeyArray[SubkeysInfo->Count].PID = KeyBody->ProcessID;
+                        SubkeysInfo->KeyArray[SubkeysInfo->Count].KeyName.Length = Name->Length;
+                        SubkeysInfo->KeyArray[SubkeysInfo->Count].KeyName.MaximumLength = Name->Length; 
+                        SubkeysInfo->KeyArray[SubkeysInfo->Count].KeyName.Buffer = (PWSTR)((PUCHAR)QueryContext->CurrentNameBuffer - Name->Length);
+                        RtlCopyMemory(  SubkeysInfo->KeyArray[SubkeysInfo->Count].KeyName.Buffer,
+                                        Name->Buffer,
+                                        Name->Length);
+                        //
+                        // update array count and work vars inside the querycontext
+                        //
+                        SubkeysInfo->Count++;
+                        QueryContext->CurrentNameBuffer = (PUCHAR)QueryContext->CurrentNameBuffer - Name->Length;
+                        QueryContext->UsedLength += SizeNeeded;
+                    } except (EXCEPTION_EXECUTE_HANDLER) {
+                        QueryContext->StatusCode = GetExceptionCode();
+                    }
+                }
+            }
+        }
 
     }
 }
@@ -376,7 +376,7 @@ Again:
                 } else if(ObReferenceObjectSafe(KeyBody)) {
                     CmpFlushNotify(KeyBody,LockHeld);
                     ASSERT( KeyBody->NotifyBlock == NULL );
-				    ObDereferenceObjectDeferDelete(KeyBody);
+                    ObDereferenceObjectDeferDelete(KeyBody);
                     goto Again;
                 }
             }
@@ -416,7 +416,7 @@ Again:
                     } else if(ObReferenceObjectSafe(KeyBody)) {
                         CmpFlushNotify(KeyBody,LockHeld);
                         ASSERT( KeyBody->NotifyBlock == NULL );
-				        ObDereferenceObjectDeferDelete(KeyBody);
+                        ObDereferenceObjectDeferDelete(KeyBody);
                     }
                 }
                 //
@@ -436,7 +436,7 @@ VOID CmpCleanUpKCBCacheTable(PCM_KEY_CONTROL_BLOCK      KeyControlBlock,
 /*++
 Routine Description:
 
-	Kicks out of cache all kcbs with RefCount == 0
+    Kicks out of cache all kcbs with RefCount == 0
 
 Arguments:
     
@@ -446,14 +446,14 @@ Return Value:
 
 --*/
 {
-    ULONG					i;
-    PCM_KEY_HASH			*Current;
-    PCM_KEY_CONTROL_BLOCK	kcb;
+    ULONG                    i;
+    PCM_KEY_HASH            *Current;
+    PCM_KEY_CONTROL_BLOCK    kcb;
     ULONG                   ThisKcbHashIndex = CmpHashTableSize;
     ULONG                   ParentKcbHashIndex = CmpHashTableSize;
     BOOLEAN                 CacheChanged;
 
-	CM_PAGED_CODE();
+    CM_PAGED_CODE();
 
     ASSERT( (KeyControlBlock && CmpIsKCBLockedExclusive(KeyControlBlock) &&
             ((KeyControlBlock->ParentKcb == NULL) || (CmpIsKCBLockedExclusive(KeyControlBlock->ParentKcb))) 
@@ -658,7 +658,7 @@ StartDeref:
                             }
                             return Count;
                         } else if(SearchType == SearchAndTagNoDelayClose) {
-				            kcb->ExtFlags |= CM_KCB_NO_DELAY_CLOSE;
+                            kcb->ExtFlags |= CM_KCB_NO_DELAY_CLOSE;
                         } else if(SearchType == SearchAndDeref) {
                             //
                             // Mark the key as deleted, remove it from cache, but don't add it
@@ -1238,15 +1238,15 @@ Return Value:
     //
     // Update the cached SubKeyCount in stored the kcb
     //
-	if( KeyControlBlock->KeyCell == HCELL_NIL ) {
-		//
-		// prior call of ZwRestoreKey(REG_FORCE_RESTORE) invalidated this kcb
-		//
-		ASSERT( KeyControlBlock->Delete );
-		Node = NULL;
-	} else {
-	    Node = (PCM_KEY_NODE)HvGetCell(KeyControlBlock->KeyHive,KeyControlBlock->KeyCell);
-	}
+    if( KeyControlBlock->KeyCell == HCELL_NIL ) {
+        //
+        // prior call of ZwRestoreKey(REG_FORCE_RESTORE) invalidated this kcb
+        //
+        ASSERT( KeyControlBlock->Delete );
+        Node = NULL;
+    } else {
+        Node = (PCM_KEY_NODE)HvGetCell(KeyControlBlock->KeyHive,KeyControlBlock->KeyCell);
+    }
     if( Node == NULL ) {
         //
         // insufficient resources; mark subkeycount as invalid
@@ -1977,13 +1977,13 @@ Return Value:
             }
         }
     }
-	if( kcb && IsHiveFrozen(Hive) && (!(kcb->Flags & KEY_SYM_LINK)) ) {
-		//
-		// kcbs created inside a frozen hive should not be added to delayclose table.
-		//
-		kcb->ExtFlags |= CM_KCB_NO_DELAY_CLOSE;
+    if( kcb && IsHiveFrozen(Hive) && (!(kcb->Flags & KEY_SYM_LINK)) ) {
+        //
+        // kcbs created inside a frozen hive should not be added to delayclose table.
+        //
+        kcb->ExtFlags |= CM_KCB_NO_DELAY_CLOSE;
 
-	}
+    }
 
     ASSERT( (!kcb) || (kcb->Delete == FALSE) );
     if( !(ControlFlags & CMP_CREATE_KCB_KCB_LOCKED) ) {
@@ -2017,7 +2017,7 @@ Routine Description:
     KCB_WORKER_DONE, we are done, simply return.  If it returns
     KCB_WORKER_CONTINUE, just continue the search. If it returns KCB_WORKER_DELETE,
     the specified KCB is marked as deleted.
-	If it returns KCB_WORKER_ERROR we bail out and signal the error to the caller.
+    If it returns KCB_WORKER_ERROR we bail out and signal the error to the caller.
 
     This routine has the side-effect of removing all delayed-close KCBs.
 
@@ -2073,7 +2073,7 @@ Return Value:
                 return TRUE;
             } else if (WorkerResult == KCB_WORKER_ERROR) {
                 CmpUnlockHashEntryByIndex(i);
-				return FALSE;
+                return FALSE;
             } else if (WorkerResult == KCB_WORKER_DELETE) {
                 ASSERT(Current->Delete);
                 *Prev = Current->NextHash;
@@ -2086,7 +2086,7 @@ Return Value:
         CmpUnlockHashEntryByIndex(i);
     }
 
-	return TRUE;
+    return TRUE;
 }
 
 VOID

@@ -24,7 +24,7 @@ include ks386.inc
 include callconv.inc            ; calling convention macros
         .list
 
-_TEXT	SEGMENT PUBLIC DWORD 'CODE'
+_TEXT    SEGMENT PUBLIC DWORD 'CODE'
 ASSUME  DS:FLAT, ES:FLAT, FS:NOTHING, GS:NOTHING, SS:NOTHING
 
 cPublicProc _DbgBreakPoint        ,0

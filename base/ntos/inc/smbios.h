@@ -297,21 +297,21 @@ typedef struct _SMBIOS_SYSTEM_EVENTLOG_STRUCT
 #define SMBIOS_MEMORY_DEVICE_TYPE   17
 typedef struct _SMBIOS_MEMORY_DEVICE_STRUCT
 {
-    UCHAR	Type;
-    UCHAR	Length;
-    USHORT	Handle;
-    USHORT	MemArrayHandle;
-    USHORT	MemErrorInfoHandle;
-    USHORT	TotalWidth;
-    USHORT	DataWidth;
-    USHORT	Size;
-    UCHAR	FormFactor;
-    UCHAR	DeviceSet;
-    UCHAR	DeviceLocator;
-    UCHAR	BankLocator;
-    UCHAR	MemoryType;
-    USHORT	TypeDetail;
-    USHORT	Speed;
+    UCHAR    Type;
+    UCHAR    Length;
+    USHORT    Handle;
+    USHORT    MemArrayHandle;
+    USHORT    MemErrorInfoHandle;
+    USHORT    TotalWidth;
+    USHORT    DataWidth;
+    USHORT    Size;
+    UCHAR    FormFactor;
+    UCHAR    DeviceSet;
+    UCHAR    DeviceLocator;
+    UCHAR    BankLocator;
+    UCHAR    MemoryType;
+    USHORT    TypeDetail;
+    USHORT    Speed;
     UCHAR   Manufacturer;
     UCHAR   SerialNumber;
     UCHAR   AssetTagNumber;

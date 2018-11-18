@@ -1575,9 +1575,9 @@ Return Value:
         //
         // Ugly hex dump.
         //
-	
+    
         wcscat( UniBuffer, L"0x" );
-	
+    
         Offset = &UniBuffer[ 6 ];
 
         Auth.HighPart = (LONG) (iSid->IdentifierAuthority.Value[ 0 ] << 8) +

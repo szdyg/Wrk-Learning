@@ -60,7 +60,7 @@ if DBG
 
 endif
 
-        mov	rax, rsp		; save stack address
+        mov    rax, rsp        ; save stack address
         cli                             ; disable interrupts
         sub     rsp, 16                 ; alignment and dummy SS selector
         push    rax                     ; save previous stack pointer

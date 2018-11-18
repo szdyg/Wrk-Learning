@@ -221,7 +221,7 @@ IopCheckUnloadDriver(
     while (deviceObject) {
         deviceObject->DeviceObjectExtension->ExtensionFlags |= DOE_UNLOAD_PENDING;
         if (deviceObject->ReferenceCount || deviceObject->AttachedDevice) {
-	    *unloadDriver = FALSE;
+        *unloadDriver = FALSE;
         }
         deviceObject = deviceObject->NextDevice;
     }
@@ -232,7 +232,7 @@ IopCheckUnloadDriver(
     // 
 
     if (driverObject->Flags & DRVO_BASE_FILESYSTEM_DRIVER && driverObject->DeviceObject) {
-	    *unloadDriver = FALSE;
+        *unloadDriver = FALSE;
     }
 
     if (*unloadDriver) {

@@ -320,7 +320,7 @@ Environment:
 
         MiDereferenceControlArea (ControlArea);
         MiReturnCommitment (CommittedPages);
-    	return Status;
+        return Status;
     }
 
     MM_TRACK_COMMIT (MM_DBG_COMMIT_SESSION_SHARED_IMAGE, CommittedPages);
@@ -830,7 +830,7 @@ Environment:
 
     if ((BYTE_OFFSET (PreferredAddress) == 0) &&
         (PreferredAddress >= (PVOID) MiSessionImageStart) &&
-	    (PreferredAddress < (PVOID) MiSessionImageEnd)) {
+        (PreferredAddress < (PVOID) MiSessionImageEnd)) {
 
         StartPosition = (ULONG) ((ULONG_PTR) PreferredAddress - MiSessionImageStart) >> PAGE_SHIFT;
 

@@ -2486,8 +2486,8 @@ ULONG DeleteRandom = 1;
 
 int __cdecl
 main(
-int	argc,
-PCHAR	argv[]
+int    argc,
+PCHAR    argv[]
 )
 {
     ULONG i;

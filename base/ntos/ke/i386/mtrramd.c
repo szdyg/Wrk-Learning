@@ -74,7 +74,7 @@ typedef struct _AMDK6_MTRR_REGION {
     ULONG                RegionFlags;
 } AMDK6_MTRR_REGION, *PAMDK6_MTRR_REGION;
 
-#define MAX_K6_REGIONS          2		// Limit the write combined regions to 2 since that's how many MTRRs we have available.
+#define MAX_K6_REGIONS          2        // Limit the write combined regions to 2 since that's how many MTRRs we have available.
 
 //
 // Value to set base address to for unused indication.
@@ -355,8 +355,8 @@ KiAmdK6MtrrSetMemoryType (
         // Add an entry to the region table.
         //
 
-	// Don't need to add these to the region table.  Non-cached regions are 
-	// accessed using a non-caching virtual pointer set up in the page tables.
+    // Don't need to add these to the region table.  Non-cached regions are 
+    // accessed using a non-caching virtual pointer set up in the page tables.
 
         break;
 
@@ -493,7 +493,7 @@ KiAmdK6HandleWcRegionRequest (
         }
     }
 
-	// A valid combination could not be found, so try to create a new range for this request.
+    // A valid combination could not be found, so try to create a new range for this request.
     //
     // Find the smallest legal size that is less than or equal to the requested range.  Scan
     // all ranges from 128k - 2G. (Start at 2G and work down).

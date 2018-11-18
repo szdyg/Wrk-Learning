@@ -690,16 +690,16 @@ CmpHysteresisTest(PVOID Ref, ULONG Level)
     DbgPrint("CmpHysteresisTest called with level = %lu \n",Level);
 }
 
-LIST_ENTRY	    CmpSelfHealQueueListHead;
-KGUARDED_MUTEX	CmpSelfHealQueueLock;
-BOOLEAN		    CmpSelfHealWorkerActive = FALSE;
+LIST_ENTRY        CmpSelfHealQueueListHead;
+KGUARDED_MUTEX    CmpSelfHealQueueLock;
+BOOLEAN            CmpSelfHealWorkerActive = FALSE;
 
 #define LOCK_SELF_HEAL_QUEUE() KeAcquireGuardedMutex(&CmpSelfHealQueueLock)
 #define UNLOCK_SELF_HEAL_QUEUE() KeReleaseGuardedMutex(&CmpSelfHealQueueLock)
 
 typedef struct {
     PWORK_QUEUE_ITEM    WorkItem;
-	LIST_ENTRY			SelfHealQueueListEntry;
+    LIST_ENTRY            SelfHealQueueListEntry;
     UNICODE_STRING      HiveName;
     //
     // variable length; name goes here
@@ -731,26 +731,26 @@ CmpRaiseSelfHealWarningWorker(
     //
     ExFreePool(Param->WorkItem);
     ExFreePool(Param);
-	
-	//
-	// see if there are other self heal warnings to be posted.
-	//
-	LOCK_SELF_HEAL_QUEUE();
-	CmpSelfHealWorkerActive = FALSE;
-	if( IsListEmpty(&CmpSelfHealQueueListHead) == FALSE ) {
-		//
-		// remove head and queue it.
-		//
+    
+    //
+    // see if there are other self heal warnings to be posted.
+    //
+    LOCK_SELF_HEAL_QUEUE();
+    CmpSelfHealWorkerActive = FALSE;
+    if( IsListEmpty(&CmpSelfHealQueueListHead) == FALSE ) {
+        //
+        // remove head and queue it.
+        //
         Param = (PCM_SELF_HEAL_WORK_ITEM_PARAMETER)RemoveHeadList(&CmpSelfHealQueueListHead);
         Param = CONTAINING_RECORD(
                         Param,
                         CM_SELF_HEAL_WORK_ITEM_PARAMETER,
                         SelfHealQueueListEntry
                         );
-		ExQueueWorkItem(Param->WorkItem, DelayedWorkQueue);
-		CmpSelfHealWorkerActive = TRUE;
-	} 
-	UNLOCK_SELF_HEAL_QUEUE();
+        ExQueueWorkItem(Param->WorkItem, DelayedWorkQueue);
+        CmpSelfHealWorkerActive = TRUE;
+    } 
+    UNLOCK_SELF_HEAL_QUEUE();
 }
 
 VOID 
@@ -791,24 +791,24 @@ Return Value:
             ExInitializeWorkItem(Param->WorkItem,
                                  CmpRaiseSelfHealWarningWorker,
                                  Param);
-			LOCK_SELF_HEAL_QUEUE();
-			if( !CmpSelfHealWorkerActive ) {
-				//
-				// no work item currently; ok to queue one.
-				//
-				ExQueueWorkItem(Param->WorkItem, DelayedWorkQueue);
-				CmpSelfHealWorkerActive = TRUE;
-			} else {
-				//
-				// add it to the end of the list. It'll be picked up when the current work item 
-				// completes
-				//
-				InsertTailList(
-					&CmpSelfHealQueueListHead,
-					&(Param->SelfHealQueueListEntry)
-					);
-			}
-			UNLOCK_SELF_HEAL_QUEUE();
+            LOCK_SELF_HEAL_QUEUE();
+            if( !CmpSelfHealWorkerActive ) {
+                //
+                // no work item currently; ok to queue one.
+                //
+                ExQueueWorkItem(Param->WorkItem, DelayedWorkQueue);
+                CmpSelfHealWorkerActive = TRUE;
+            } else {
+                //
+                // add it to the end of the list. It'll be picked up when the current work item 
+                // completes
+                //
+                InsertTailList(
+                    &CmpSelfHealQueueListHead,
+                    &(Param->SelfHealQueueListEntry)
+                    );
+            }
+            UNLOCK_SELF_HEAL_QUEUE();
         } else {
             ExFreePool(Param);
         }
@@ -839,7 +839,7 @@ Return Value:
 
     PAGED_CODE();
 
-	for (i = 0; i < CM_NUMBER_OF_MACHINE_HIVES; i++) {
+    for (i = 0; i < CM_NUMBER_OF_MACHINE_HIVES; i++) {
         if( !(CmpMachineHiveList[i].HHiveFlags & HIVE_VOLATILE) && (((PHHIVE)(CmpMachineHiveList[i].CmHive2))->BaseBlock->BootType & HBOOT_SELFHEAL) ) {
             RtlInitUnicodeString(
                 &Name,

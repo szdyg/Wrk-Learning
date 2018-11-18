@@ -159,21 +159,21 @@ stdENDP _RtlpExecuteHandlerForUnwind
 
 cPublicProc   ExecuteHandler,5
         push    ebx
-	push    esi
-	push    edi
-	xor     eax, eax
-	xor     ebx, ebx
-	xor     esi, esi
-	xor     edi, edi
-	push    [esp+32]          ; ExceptionRoutine
-	push    [esp+32]          ; DispatcherContext
-	push    [esp+32]          ; ContextRecord
-	push    [esp+32]          ; EstablisherFrame
-	push    [esp+32]          ; ExceptionRecord
-	call    ExecuteHandler2
-	pop     edi
-	pop     esi
-	pop     ebx
+    push    esi
+    push    edi
+    xor     eax, eax
+    xor     ebx, ebx
+    xor     esi, esi
+    xor     edi, edi
+    push    [esp+32]          ; ExceptionRoutine
+    push    [esp+32]          ; DispatcherContext
+    push    [esp+32]          ; ContextRecord
+    push    [esp+32]          ; EstablisherFrame
+    push    [esp+32]          ; ExceptionRecord
+    call    ExecuteHandler2
+    pop     edi
+    pop     esi
+    pop     ebx
         stdRET  ExecuteHandler
 stdENDP ExecuteHandler
 

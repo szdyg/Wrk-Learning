@@ -990,7 +990,7 @@ Environment:
         PointerPte = Pfn1->PteAddress;
 
         if (PointerPte < MiGetPteAddress ((PVOID)MM_SYSTEM_SPACE_START) ||
-	       MI_IS_SESSION_PTE (PointerPte)) {
+           MI_IS_SESSION_PTE (PointerPte)) {
 
             Process = PsGetCurrentProcess ();
             PointerPte = MiMapPageInHyperSpaceAtDpc (Process, Pfn1->u4.PteFrame);

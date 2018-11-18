@@ -340,7 +340,7 @@ Return Value:
         //
         // we are not allowed to shrink in shared mode.
         //
-	    ASSERT_HIVE_WRITER_LOCK_OWNED((PCMHIVE)Hive);
+        ASSERT_HIVE_WRITER_LOCK_OWNED((PCMHIVE)Hive);
 
         while( Offset < OldFileSize ) {
             CmpUnmapCmViewSurroundingOffset((PCMHIVE)Hive,Offset);
@@ -1050,9 +1050,9 @@ Note:
         //
         CcFlushCache (CmHive->FileObject->SectionObjectPointer,(PLARGE_INTEGER)((ULONG_PTR)FileOffset + 1)/*we are private writers*/,Length,&IoStatus);
         status = IoStatus.Status;
-	    if( !NT_SUCCESS(status) ) {
-			goto Error;
-		}
+        if( !NT_SUCCESS(status) ) {
+            goto Error;
+        }
     } 
     //
     // we have to do that regardless, to make sure the disk cache makes it to the disk.
